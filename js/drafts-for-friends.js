@@ -1,22 +1,3 @@
-// // The old Javascript, will be removing this shortly...
-// jQuery(function() {
-// 	jQuery('form.drafts-for-friends-extend').hide();
-// 	jQuery('a.drafts-for-friends-extend').show();
-// 	jQuery('a.drafts-for-friends-extend-cancel').show();
-// 	jQuery('a.drafts-for-friends-extend-cancel').css('display', 'inline');
-// });
-// window.draftsforfriends = {
-// 	toggle_extend: function(key) {
-// 		jQuery('#drafts-for-friends-extend-form-'+key).show();
-// 		jQuery('#drafts-for-friends-extend-link-'+key).hide();
-// 		jQuery('#drafts-for-friends-extend-form-'+key+' input[name="expires"]').focus();
-// 	},
-// 	cancel_extend: function(key) {
-// 		jQuery('#drafts-for-friends-extend-form-'+key).hide();
-// 		jQuery('#drafts-for-friends-extend-link-'+key).show();
-// 	}
-// };
-
 jQuery( document ).ready( function( $ ) {
 
 	$('form.drafts-for-friends-extend').hide();
