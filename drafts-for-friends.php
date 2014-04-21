@@ -83,16 +83,33 @@ class DraftsForFriends	{
 	  * Calculate the expiration date.
 	  */
 	function calc( $params ) {
+
+		// Setup some variables, yo.
 		$exp = 60;
 		$multiply = 60;
-		if ( isset( $params['expires'] ) ) {
+
+		// Make sure that we have a valid number as the expiration value
+		if ( isset( $params['expires'] ) )
 			$exp = absint( $params['expires'] );
+
+		// Setup the defaults.
+		$mults = array(
+			's' => 1,
+			'm' => MINUTE_IN_SECONDS,
+			'h' => HOUR_IN_SECONDS,
+			'd' => DAY_IN_SECONDS,
+			);
+
+		// Make sure that we have the units to measure.
+		if ( $params['measure'] && $mults[ $params['measure'] ] ) {
+			$multiply = $mults[ esc_html( $params['measure'] ) ];
 		}
-		$mults = array('s' => 1, 'm' => 60, 'h' => 3600, 'd' => 24*3600);
-		if ($params['measure'] && $mults[$params['measure']]) {
-			$multiply = $mults[$params['measure']];
-		}
-		return $exp * $multiply;
+
+		// Multiply the values for the new expiration date.
+		$new_date = $exp * $multiply;
+
+		// Spit it all back out.
+		return absint( $new_date );
 	}
 
 	function process_post_options( $params ) {
@@ -103,8 +120,10 @@ class DraftsForFriends	{
 		// Do we have a post to save?
 		if ( $params['post_id'] ) {
 
+			// One function call will let us know if the post exists, and what the status is.
 			$status = get_post_status( absint( $params['post_id'] ) );
 
+			// Roll through the different scenarios.
 			switch ( $status ) {
 
 				// If there isn't a post, bounce...
@@ -139,6 +158,9 @@ class DraftsForFriends	{
 	 */
 	function process_delete( $params ) {
 
+		// If we are doing a normal $_GET request, the params get passed
+		// through the page load, if this comes over AJAX, we need to grab
+		// them for use in the function.
 		$params = ( empty( $params ) ) ? $_GET : $params;
 
 		// Check the nonce.
