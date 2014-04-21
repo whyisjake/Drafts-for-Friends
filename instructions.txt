@@ -1,0 +1,10 @@
+1 Treat this as if you were forking the plugin and will be putting your name on it. Feel free to impress us.
+2 Add a column in the table – Expires After and make it display a human readable value. Example "In 58 minutes."
+3 Make sure to follow:
+	a WordPress Coding Standards: http://codex.wordpress.org/WordPress_Coding_Standards
+	b Data Validation: http://codex.wordpress.org/Data_Validation
+	c i18n: http://codex.wordpress.org/I18n_for_WordPress_Developers
+	d Security, best practices, etc.
+4 Don't be code-shy and feel free to explore parts of the plugin, not only those you need to touch to solve your problem.
+5 Commit changes back to the SVN repo. Split up commits as necessary. Refer to the info about good commit messages (what-is-a-good-commit-message.html).
+6 Let me know when you are done with the test.

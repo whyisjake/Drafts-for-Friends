@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en"><head profile="http://gmpg.org/xfn/11">
+
+<h2>What Is a Good Commit Message</h2>
+<p>Commit messages are the most common way developers communicate with other developers.</p>
+<p>The goal of a commit message is to communicate your change with everybody else.</p>
+<p>The audience of a commit message is:</p>
+<p>0. People reading the commit timeline.</p>
+<p>1. People debugging code.</p>
+<p>Having these assumptions in mind:</p>
+
+<h4>A good commit message must have a subject line. One sentence-long brief description of what  the change and if it makese sense why.</h4>
+<p>A good subject line gives the reader the power to know the gist of the commit without bothering to read the whole commit message.</p>
+<p><em>Example:</em></p>
+<pre>Fix stats link on m.wordpress.com</pre>
+<p>This does not need a high-level <em>why</em> part, because it&#8217;s obvious – the links weren&#8217;t working.</p>
+<p><em>Example:</em></p>
+<pre>VIP Report: clear caches on each post to save memory</pre>
+<p>Here we need a <em>why</em> part, because if the message was only &#8220;clear caches on each post&#8221;, I would have to look at the code and then I would be, like, are you crazy? Why the hell would you clear cache for each post in a loop?</p>
+<p>Whenever the commit is a part of a clearly-defined and named project, prefixing the commit with the project name is very helpful. It&#8217;s not mandatory, because often the project space is vague and the list of committed files reveals similar information.</p>
+
+<h4>There must be an empty line between the subject line and the rest of the commit message (if any). Whitespace is like bacon for our brains.</h4>
+
+<h4>A good commit message tells why a change was made.</h4>
+<p>Reasoning why is helpful to both of our audiences. Those following the timeline, can learn a new approach and how to make their code better. Those tracing bugs gain insight for the context of the problem you were trying to solve and helps them decide whether the root cause is in the implementation or higher up the chain.</p>
+<p>Explaining why is tricky, because it&#8217;s often obvious. &#8220;I&#8217;m fixing it because it&#8217;s broken&#8221;. &#8220;I&#8217;m improving this, because can be better.&#8221;</p>
+<p>If it&#8217;s obvious, go one level deeper. The <a href="http://en.wikipedia.org/wiki/5_Whys" rel="noreferrer">5 Whys</a> technique is great. Not only for looking for root causes of problems. But for making sure you are doing what you are doing for the right reasons.</p>
+<p><em>Example:</em></p>
+<pre>JSON API: Split class into hierarchy for easier inclusion in Jetpack
+
+Including the old code required a bunch of hacks and compatibility layers.
+With the new hierarchy, we can get rid of almost all the hacks and drop in
+the files to Jetpack as is.
+</pre>
+<p>Here the commit message very conveniently explains what were the downsides of the old approach and why the new approach is better.</p>
+<p><em>Example:</em></p>
+<pre>Remove filtering by ticket
+
+It's not very useful, while it's slow to generate.
+
+The workflow is to usually go to the ticket page and see associated
+comments there.</pre>
+<p>Here the commit message shares a UX decision we made, which is the primary reason of the commit.</p>
+
+<h4>Most of the commits fix a problem. In this case a good commit message explains what caused the problem and what were its consequences.</h4>
+<p>Everybody needs to know what caused a problem in order to avoid causing a similar problem again.  Knowing the consequences can explain already noticed erroneous behaviour and can help somebody debugging a problem compare the consequences of this, already fixed, problem with the one being debugged.</p>
+<p>If possible, avoid the word fix. Almost always there is a more specific verb for your action.</p>
+<p><em>Example:</em></p>
+<pre>
+Set the right dropdown values when I enter baba.mlblogs.com in the signup
+
+The code, which does the smartness of setting the right dropdown values
+wasn't that smart and if I entered baba.mlblogs.com it set the blogname
+to baba.mlblogs and the domain to .com, because .com was in front of
+.mblogs.com in the list of domains.
+
+The solution was to sort the domains by length, this way there is no
+chance a domain, which is a suffix of another one will be first in the
+list.
+</pre>
+<p>We could&#8217;ve just fixed the signup dropdown. Instead we set the right values in a specific corner case.</p>
+<p>Also, we explain what sort of smart code caused the problem. And  give an example where the code broke.</p>
+<p>In the end, we even explain how the fix works (see the &#8220;how&#8221; rule below).</p>
+<p><em>Example:</em></p>
+<pre>Fix stats link on m.wordpress.com
+
+We need double quotes, when we want to use variables in the string.
+
+The problem was introduced in the mass sanitization of [46532].</pre>
+<p>Here we tried, but couldn&#8217;t find a better substitute for &#8220;fix&#8221;. It&#8217;s fine.</p>
+<p>If the problem is caused by a single changeset, a good commit message will mention it.</p>
+
+<h4>A good commit message explains how it achieves its goal. But only if it isn&#8217;t obvious.</h4>
+<p>Most of the time it&#8217;s obvious. Only sometimes some high-level algorithm is encoded in the change and it would benefit the reader to know it.</p>
+<p><em>Example</em>:</p>
+<pre>
+Add a first pass client stat for bandwidth
+
+Bandwidth is extrapolated from a month sample. From
+there we get the average number of bytes per pageview
+for each blog. This data is cached in means.json.
+
+All the code for generating the data in means.json is
+in the static methods of the class.
+</pre>
+<p>Here we explain the algorithm for guessing bandwidth data. It would have been possible to extract this information from the commit, but it would&#8217;ve taken a lot of time and energy. Also, by including it in the commit message we imply that it&#8217;s important for you to know that.</p>
+<p>Also, see the first example of the previous rule.</p>
+
+<h4>If the subject line of a commit message contains the word <em>and</em> or in other way lists more than one item, the commit is probably too large. Split it.</h4>
+<p>Make your commits as small as possible. If you notice a coding style problem while fixing a bug, make a note and fix it after you fix the bug. If you are fixing a bug and you notice another bug, make a note and fix the second bug in another commit.</p>
+<p>The same is especially true for white space changes to existing code.  White spaces changes should be a separate commit.</p>
+
+<h4>A good commit message should not depend on the code to explain what it does or why it does it.</h4>
+<p>Two notes here:</p>
+<p>This doesn&#8217;t mean we should tell what each line of code does. It means that we should convey all the non-trivial information in the code to the commit message.</p>
+<p>This doesn&#8217;t mean we shouldn&#8217;t include any of this information in the code. Knowing why a function exists, what it does, or what algorithm does it use can often be a useful comment.</p>
+
+<h4>A good commit message doesn&#8217;t substitute information about what it does or why it does it with a link.</h4>
+<p>Links are encouraged for more context. But a good commit message has a sentence of explanation, not a link to a 20-comments discussion without a clearly extracted conclusion.</p>
+
+<h4>It&#8217;s perfectly OK to spend more time crafting your commit message than writing the code for your commit.</h4>
+
+<h4>It&#8217;s perfectly OK for your commit message to be longer than your commit.</h4>
+
+<h4>A good commit message gives props and references relevant Trac tickets.</h4>
+
+<h4>Common sense always overrules what a good commit message thinks it should be.</h4>
+
+</body>
+</html>
