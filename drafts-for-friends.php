@@ -1,11 +1,12 @@
 <?php
 /*
 Plugin Name: Drafts for Friends
-Plugin URI: http://automattic.com/
+Plugin URI: http://jakespurlock.com/drafts-for-friends/
 Description: Now you don't need to add friends as users to the blog in order to let them preview your drafts
 Author: Jake Spurlock
 Version: 0.5
 Author URI: http://jakespurlock.com
+Text Domain: drafts-for-friends
 */
 
 class DraftsForFriends	{
@@ -28,23 +29,30 @@ class DraftsForFriends	{
 	 */
 	protected $slug = 'drafts-for-friends';
 
-	function __construct(){
+	public function __construct(){
     	add_action( 'init', array( $this, 'init' ) );
 	}
 
-	function init() {
+	public function init() {
+
+		// Need to know which user to pull the shared items from.
 		global $current_user;
+
+		// Add the admin page.
 		add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
+
+		// Intercept the post
 		add_filter( 'the_posts', array( $this, 'the_posts_intercept' ) );
 		add_filter( 'posts_results', array( $this, 'posts_results_intercept' ) );
+
+		// Enqueue the admin scripts/styles
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_resources' ) );
 
 		$this->admin_options = $this->get_admin_options();
 
 		$this->user_options = ( $current_user->id > 0 && isset( $this->admin_options[ $current_user->id ] ) ) ? $this->admin_options[ $current_user->id ] : array();
 
 		$this->save_admin_options();
-
-		$this->admin_page_init();
 
 		$this->shared_post = null;
 
@@ -53,8 +61,10 @@ class DraftsForFriends	{
 
 	}
 
-	function admin_page_init() {
-		if ( is_admin() ) {
+
+	public function load_resources() {
+		$screen =  get_current_screen();
+		if ( is_admin() && $screen->id == 'posts_page_drafts-for-friends' ) {
 			wp_enqueue_script('jquery');
 			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery'), $this->version );
 			wp_enqueue_style( $this->slug, plugins_url( 'css/drafts-for-friends.css', __FILE__ ), '', $this->version );
@@ -74,9 +84,9 @@ class DraftsForFriends	{
         update_option( 'shared', $this->admin_options );
     }
 
+    // Add the admin page.
 	function add_admin_pages(){
-		add_submenu_page("edit.php", __('Drafts for Friends', 'draftsforfriends'), __('Drafts for Friends', 'draftsforfriends'),
-			1, 'drafts-for-friends', array( $this, 'output_existing_menu_sub_admin_page'));
+		add_submenu_page('edit.php', __('Drafts for Friends', 'drafts-for-friends'), __('Drafts for Friends', 'drafts-for-friends'), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
 	}
 
 	/**
@@ -85,12 +95,12 @@ class DraftsForFriends	{
 	function calc( $params ) {
 
 		// Setup some variables, yo.
-		$exp = 60;
-		$multiply = 60;
+		$expiration = MINUTE_IN_SECONDS;
+		$multiply = MINUTE_IN_SECONDS;
 
 		// Make sure that we have a valid number as the expiration value
 		if ( isset( $params['expires'] ) )
-			$exp = absint( $params['expires'] );
+			$expiration = absint( $params['expires'] );
 
 		// Setup the defaults.
 		$mults = array(
@@ -106,7 +116,7 @@ class DraftsForFriends	{
 		}
 
 		// Multiply the values for the new expiration date.
-		$new_date = $exp * $multiply;
+		$new_date = $expiration * $multiply;
 
 		// Spit it all back out.
 		return absint( $new_date );
@@ -128,12 +138,12 @@ class DraftsForFriends	{
 
 				// If there isn't a post, bounce...
 				case null || false :
-					return __('There is no such post!', 'draftsforfriends');
+					return __('There is no such post!', 'drafts-for-friends');
 					break;
 
 				// Is this a published post?
 				case 'publish':
-					return __('The post is published!', 'draftsforfriends');
+					return __('The post is published!', 'drafts-for-friends');
 					break;
 
 				// Time to save the post.
@@ -179,9 +189,9 @@ class DraftsForFriends	{
 		$this->save_admin_options();
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			die( __('Shared post has been successfully deleted.', 'draftsforfriends') );
+			die( __('Shared post has been successfully deleted.', 'drafts-for-friends') );
 		} else {
-			return __('Shared post has been successfully deleted.', 'draftsforfriends');
+			return __('Shared post has been successfully deleted.', 'drafts-for-friends');
 		}
 	}
 
@@ -274,8 +284,8 @@ class DraftsForFriends	{
 		$drafts = $this->get_the_user_drafts( $current_user->data->ID );
 
 		// Let's get the output started...
-		$output = '<select id="draftsforfriends-postid" name="post_id">';
-		$output .= '<option value="">' . __('Choose a draft:', 'draftsforfriends') . '</option>';
+		$output = '<select id="drafts-for-friends-postid" name="post_id">';
+		$output .= '<option value="">' . __('Choose a draft:', 'drafts-for-friends') . '</option>';
 		foreach ( $drafts as $draft => $type ) {
 			$output .= '<option value="" disabled>' . esc_html( ucfirst( $draft ) ) . '</option>';
 			foreach ( $type as $draft ) {
@@ -307,12 +317,12 @@ class DraftsForFriends	{
 	function get_share_url( $share ) {
 
 		// Start off with the home_url();
-		$url = home_url();
+		$url = home_url( '/' );
 
 		// Add the arguments.
 		$args = array(
 			'p' 				=> absint( $share['id'] ),
-			'draftsforfriends' 	=> esc_attr( $share['key'] ),
+			'drafts-for-friends' 	=> esc_attr( $share['key'] ),
 			);
 
 		$url = add_query_arg( $args, $url );
@@ -360,7 +370,7 @@ class DraftsForFriends	{
 	 */
 	function output_existing_menu_sub_admin_page() {
 
-		if ( isset( $_POST['draftsforfriends_submit'] ) && $_POST['draftsforfriends_submit'] ) {
+		if ( isset( $_POST['drafts-for-friends_submit'] ) && $_POST['drafts-for-friends_submit'] ) {
 			$t = $this->process_post_options( $_POST );
 		} elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'extend') {
 			$t = $this->process_extend( $_POST );
@@ -370,24 +380,24 @@ class DraftsForFriends	{
 
 		<div class="wrap">
 
-			<h2><?php _e('Drafts for Friends', 'draftsforfriends'); ?></h2>
+			<h2><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h2>
 
 			<div class="updated hide">
 				<?php if ( isset( $t ) )
 					echo esc_html( $t ); ?>
 			</div>
 
-			<h3><?php _e('Currently Shared Drafts', 'draftsforfriends'); ?></h3>
+			<h3><?php _e('Currently Shared Drafts', 'drafts-for-friends'); ?></h3>
 
 			<!-- Let's get the table started. -->
 			<table class="widefat">
 				<thead>
 					<tr>
-						<th><?php _e('ID', 'draftsforfriends'); ?></th>
-						<th><?php _e('Title', 'draftsforfriends'); ?></th>
-						<th><?php _e('Link', 'draftsforfriends'); ?></th>
-						<th><?php _e('Expires', 'draftsforfriends'); ?></th>
-						<th colspan="2" class="actions"><?php _e('Actions', 'draftsforfriends'); ?></th>
+						<th><?php _e('ID', 'drafts-for-friends'); ?></th>
+						<th><?php _e('Title', 'drafts-for-friends'); ?></th>
+						<th><?php _e('Link', 'drafts-for-friends'); ?></th>
+						<th><?php _e('Expires', 'drafts-for-friends'); ?></th>
+						<th colspan="2" class="actions"><?php _e('Actions', 'drafts-for-friends'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -407,34 +417,34 @@ class DraftsForFriends	{
 								</td>
 								<td><?php echo wp_kses_post( $this->get_expired_time( $share ) ); ?></td>
 								<td class="actions">
-									<a class="button draftsforfriends-extend edit" id="draftsforfriends-extend-link-<?php echo esc_attr( $share['key'] ); ?>"
-										href="javascript:draftsforfriends.toggle_extend('<?php echo esc_js( $share['key'] ); ?>');">
-											<?php _e('Extend', 'draftsforfriends'); ?>
+									<a class="button drafts-for-friends-extend edit" id="drafts-for-friends-extend-link-<?php echo esc_attr( $share['key'] ); ?>"
+										href="javascript:drafts-for-friends.toggle_extend('<?php echo esc_js( $share['key'] ); ?>');">
+											<?php _e('Extend', 'drafts-for-friends'); ?>
 									</a>
-									<form class="draftsforfriends-extend" id="<?php echo esc_attr( 'draftsforfriends-extend-form-' . $share['key'] ); ?>" method="post">
+									<form class="drafts-for-friends-extend" id="<?php echo esc_attr( 'drafts-for-friends-extend-form-' . $share['key'] ); ?>" method="post">
 										<?php wp_nonce_field( 'extend', 'extend' ); ?>
 										<input type="hidden" name="action" value="extend">
 										<input type="hidden" name="key" value="<?php echo $share['key']; ?>" />
-										<input type="submit" class="button submit-extend" name="draftsforfriends_extend_submit" value="<?php esc_attr_e('Extend', 'draftsforfriends'); ?>"/>
-										<?php _e('by', 'draftsforfriends');?>
+										<input type="submit" class="button submit-extend" name="drafts-for-friends_extend_submit" value="<?php esc_attr_e('Extend', 'drafts-for-friends'); ?>"/>
+										<?php _e('by', 'drafts-for-friends');?>
 										<?php echo $this->tmpl_measure_select(); ?>
-										<a class="draftsforfriends-extend-cancel" href="javascript:draftsforfriends.cancel_extend('<?php echo esc_js( $share['key'] ); ?>');"><?php _e('Cancel', 'draftsforfriends'); ?></a>
+										<a class="drafts-for-friends-extend-cancel" href="javascript:drafts-for-friends.cancel_extend('<?php echo esc_js( $share['key'] ); ?>');"><?php _e('Cancel', 'drafts-for-friends'); ?></a>
 									</form>
 								</td>
 								<td class="actions">
-									<a class="delete button delete-draft-link" data-share="<?php echo esc_attr( $share['key'] ); ?>" data-id="<?php echo esc_attr( $share['id'] ); ?>" href="<?php echo esc_url( $this->get_delete_url( $share ) ); ?>"><?php echo esc_html( __('Delete', 'draftsforfriends') ); ?></a>
+									<a class="delete button delete-draft-link" data-share="<?php echo esc_attr( $share['key'] ); ?>" data-id="<?php echo esc_attr( $share['id'] ); ?>" href="<?php echo esc_url( $this->get_delete_url( $share ) ); ?>"><?php echo esc_html( __('Delete', 'drafts-for-friends') ); ?></a>
 								</td>
 							</tr><?php
 						endforeach;
 					else: ?>
-						<tr><td colspan="5"><?php _e('No shared drafts!', 'draftsforfriends'); ?></td></tr>
+						<tr><td colspan="5"><?php _e('No shared drafts!', 'drafts-for-friends'); ?></td></tr>
 					<?php endif; ?>
 				</tbody>
 			</table>
-			<h3><?php _e('Drafts for Friends', 'draftsforfriends'); ?></h3>
-			<form id="draftsforfriends-share" action="" method="post">
+			<h3><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h3>
+			<form id="drafts-for-friends-share" action="" method="post">
 				<p><?php echo $this->drafts_dropdown(); ?></p>
-				<p><input type="submit" class="button" name="draftsforfriends_submit" value="<?php esc_attr_e('Share it', 'draftsforfriends'); ?>" /><?php _e('for', 'draftsforfriends'); ?><?php echo $this->tmpl_measure_select(); ?>.</p>
+				<p><input type="submit" class="button" name="drafts-for-friends_submit" value="<?php esc_attr_e('Share it', 'drafts-for-friends'); ?>" /><?php _e('for', 'drafts-for-friends'); ?><?php echo $this->tmpl_measure_select(); ?>.</p>
 			</form>
 		</div>
 	<?php
@@ -453,7 +463,7 @@ class DraftsForFriends	{
 			// Get all of the shares.
 			$shares = $option['shared'];
 			foreach( $shares as $share ) {
-				if ( isset( $_GET['draftsforfriends'] ) && $share['key'] == $_GET['draftsforfriends'] && $pid ) {
+				if ( isset( $_GET['drafts-for-friends'] ) && $share['key'] == $_GET['drafts-for-friends'] && $pid ) {
 					// If the expiration date isn't in the past, then we can set the variable to be true.
 					if( ! $this->is_in_the_past( $share['expires'] ) ) {
 						return true;
@@ -504,10 +514,10 @@ class DraftsForFriends	{
 	 * Build the measure select.
 	 */
 	function tmpl_measure_select() {
-		$secs 	= __('seconds', 'draftsforfriends');
-		$mins 	= __('minutes', 'draftsforfriends');
-		$hours 	= __('hours', 'draftsforfriends');
-		$days 	= __('days', 'draftsforfriends');
+		$secs 	= __('seconds', 'drafts-for-friends');
+		$mins 	= __('minutes', 'drafts-for-friends');
+		$hours 	= __('hours', 'drafts-for-friends');
+		$days 	= __('days', 'drafts-for-friends');
 		$output = '<input name="expires" type="number" min="0" step="1" value="2" size="4"/>
 					<select name="measure">
 						<option value="s">' . esc_html( $secs ) . '</option>

@@ -1,19 +1,19 @@
 // The old Javascript, will be removing this shortly...
 jQuery(function() {
-	jQuery('form.draftsforfriends-extend').hide();
-	jQuery('a.draftsforfriends-extend').show();
-	jQuery('a.draftsforfriends-extend-cancel').show();
-	jQuery('a.draftsforfriends-extend-cancel').css('display', 'inline');
+	jQuery('form.drafts-for-friends-extend').hide();
+	jQuery('a.drafts-for-friends-extend').show();
+	jQuery('a.drafts-for-friends-extend-cancel').show();
+	jQuery('a.drafts-for-friends-extend-cancel').css('display', 'inline');
 });
 window.draftsforfriends = {
 	toggle_extend: function(key) {
-		jQuery('#draftsforfriends-extend-form-'+key).show();
-		jQuery('#draftsforfriends-extend-link-'+key).hide();
-		jQuery('#draftsforfriends-extend-form-'+key+' input[name="expires"]').focus();
+		jQuery('#drafts-for-friends-extend-form-'+key).show();
+		jQuery('#drafts-for-friends-extend-link-'+key).hide();
+		jQuery('#drafts-for-friends-extend-form-'+key+' input[name="expires"]').focus();
 	},
 	cancel_extend: function(key) {
-		jQuery('#draftsforfriends-extend-form-'+key).hide();
-		jQuery('#draftsforfriends-extend-link-'+key).show();
+		jQuery('#drafts-for-friends-extend-form-'+key).hide();
+		jQuery('#drafts-for-friends-extend-link-'+key).show();
 	}
 };
 

@@ -1,15 +1,15 @@
-a.draftsforfriends-extend,
-a.draftsforfriends-extend-cancel {
+a.drafts-for-friends-extend,
+a.drafts-for-friends-extend-cancel {
 	display: none;
 }
 
-form.draftsforfriends-extend {
+form.drafts-for-friends-extend {
 	white-space: nowrap;
 }
 
-form.draftsforfriends-extend,
-form.draftsforfriends-extend input,
-form.draftsforfriends-extend select {
+form.drafts-for-friends-extend,
+form.drafts-for-friends-extend input,
+form.drafts-for-friends-extend select {
 	font-size: 11px;
 }
 
