@@ -331,19 +331,14 @@ class DraftsForFriends	{
 	function output_existing_menu_sub_admin_page() {
 
 		if ( isset( $_POST['draftsforfriends_submit'] ) && $_POST['draftsforfriends_submit'] ) {
-			$t = $this->process_post_options(  $_POST );
-
-			// Get the current user.
-		} elseif ( isset(
-
-		Do we have a post to save? // $_POST['action'] ) && $_POST['action'] == 'extend') {
-			$ t = $this- >process_extend( $_POST );
-			// Do we really need to get the entire post object here? Seems a little heavy handed...
+			$t = $this->process_post_options( $_POST );
+		} elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'extend') {
+			$t = $this->process_extend( $_POST );
 		} elseif ( isset( $_GET['action'] ) && $_GET['action'] == 'delete' ) {
-
-		// If there isn't a pos absint()   bounce.
-			$t = $this->process_del e te ( $_GET
-		}<div class="wra p
+			$t = $this->process_delete( $_GET );
+		}
+?>
+	<div class="wrap">
 
 		<h2><?php _e('Drafts for Friends', 'draftsforfriends'); ?></h2>
 
