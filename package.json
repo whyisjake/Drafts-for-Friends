@@ -1,0 +1,9 @@
+{
+  "name": "DraftsforFriends",
+  "description": "Now you don't need to add friends as users to the blog in order to let them preview your drafts",
+  "verison": "0.5",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-po2mo": "~0.1.0"
+  }
+}
