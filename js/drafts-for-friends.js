@@ -74,7 +74,7 @@ jQuery( document ).ready( function( $ ) {
 		time = $( 'tr.' + key + ' td.time' ).html();
 
 		// Clear the current time, and add a loading .gif
-		$( 'tr.' + key + ' td.time' ).html( '<img src="/wp-admin/images/wpspin_light.gif">' );
+		$( 'tr.' + key + ' td.time' ).html( '<img src="' + drafts.loading_gif + '">' );
 
 		// Grab all of the inputs
 		var inputs = $( 'form[data-key=' + key + '] :input' );

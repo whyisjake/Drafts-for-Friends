@@ -69,6 +69,7 @@ class DraftsForFriends	{
 			wp_enqueue_script('jquery');
 			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery'), $this->version );
 			wp_enqueue_style( $this->slug, plugins_url( 'css/drafts-for-friends.css', __FILE__ ), '', $this->version );
+			wp_localize_script( $this->slug, 'drafts', array( 'loading_gif' => get_admin_url( '', '/images/wpspin_light.gif' ) ) );
 		}
 	}
 
