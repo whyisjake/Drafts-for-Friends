@@ -216,15 +216,24 @@ class DraftsForFriends	{
 
 		// Set up the array of all of the shared posts.
 		$shared = array();
+		$new_expiration;
 		foreach( $this->user_options['shared'] as $share ) {
 			if ( $share['key'] == $params['key'] ) {
-				$share['expires'] += $this->calc( $params );
+				$new_expiration = $share['expires'] += $this->calc( $params );
 			}
 			$shared[] = $share;
 		}
 		$this->user_options['shared'] = $shared;
 		$this->save_admin_options();
-		return 'Post sharing time has been updated.';
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			$return_array = array(
+				'message'	=> esc_attr__('Post sharing time has been updated.', 'drafts-for-friends'),
+				'time'		=> esc_attr( $this->get_expired_time( array( 'expires' => $new_expiration ) ) ),
+			);
+			die( json_encode( $return_array ) );
+		} else {
+			return __('Post sharing time has been updated.', 'drafts-for-friends');
+		}
 	}
 
 	/**
