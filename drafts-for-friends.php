@@ -212,7 +212,7 @@ class DraftsForFriends	{
 
 		// Check the nonce.
 		if ( ! wp_verify_nonce( $_POST['extend'], 'extend' ) )
-			die( 'The nonce failed, and we couldn\'t go any further...' );
+			die( json_encode( array( 'error' => esc_attr__( 'The nonce failed, and we couldn\'t go any further...', 'drafts-for-friends' ) ) ) );
 
 		// Set up the array of all of the shared posts.
 		$shared = array();
