@@ -99,8 +99,6 @@ class DraftsForFriends	{
 
 		// Do we have a post to save?
 		if ( $params['post_id'] ) {
-			// Do we really need to get the entire post object here? Seems a little heavy handed...
-			$p = get_post( absint( $params['post_id'] ) );
 
 			$status = get_post_status( absint( $params['post_id'] ) );
 
