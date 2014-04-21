@@ -54,6 +54,7 @@ class DraftsForFriends	{
 		if ( is_admin() ) {
 			wp_enqueue_script('jquery');
 			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery'), $this->version );
+			wp_enqueue_style( $this->slug, plugins_url( 'css/drafts-for-friends.css', __FILE__ ), '', $this->version );
 			add_action('admin_head', array( $this, 'print_admin_css' ) );
 		}
 	}
@@ -482,14 +483,6 @@ class DraftsForFriends	{
 	}
 
 	function print_admin_css() {
-?>
-	<style type="text/css">
-		a.draftsforfriends-extend, a.draftsforfriends-extend-cancel { display: none; }
-		form.draftsforfriends-extend { white-space: nowrap; }
-		form.draftsforfriends-extend, form.draftsforfriends-extend input, form.draftsforfriends-extend select { font-size: 11px; }
-		th.actions, td.actions { text-align: center; }
-	</style>
-<?php
 	}
 }
 
