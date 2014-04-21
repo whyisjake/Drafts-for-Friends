@@ -58,6 +58,7 @@ class DraftsForFriends	{
 
 		// Start the AJAX requests with the
 		add_action( 'wp_ajax_process_delete', array( $this, 'process_delete' ) );
+		add_action( 'wp_ajax_process_extend', array( $this, 'process_extend' ) );
 
 	}
 
@@ -203,6 +204,11 @@ class DraftsForFriends	{
 	 *
 	 */
 	function process_extend( $params ) {
+
+		// If we are doing a normal $_GET request, the params get passed
+		// through the page load, if this comes over AJAX, we need to grab
+		// them for use in the function.
+		$params = ( empty( $params ) ) ? $_POST : $params;
 
 		// Check the nonce.
 		if ( ! wp_verify_nonce( $_POST['extend'], 'extend' ) )
