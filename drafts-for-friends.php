@@ -26,7 +26,7 @@ class DraftsForFriends	{
 	 * Slug
 	 * @var null
 	 */
-	protected $slug = '0.5';
+	protected $slug = 'drafts-for-friends';
 
 	function __construct(){
     	add_action( 'init', array( $this, 'init' ) );
