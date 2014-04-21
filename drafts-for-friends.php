@@ -375,6 +375,23 @@ class DraftsForFriends	{
 	}
 
 	/**
+	 * Build the measure select.
+	 */
+	function tmpl_measure_select() {
+		$secs 	= __('seconds', 'drafts-for-friends');
+		$mins 	= __('minutes', 'drafts-for-friends');
+		$hours 	= __('hours', 'drafts-for-friends');
+		$days 	= __('days', 'drafts-for-friends');
+		$output = '<select name="measure">
+				<option value="s">' . esc_html( $secs ) . '</option>
+				<option value="m">' . esc_html( $mins ) . '</option>
+				<option value="h" selected="selected">' . esc_html( $hours ) . '</option>
+				<option value="d">' . esc_html( $days ) . '</option>
+			</select>';
+		return $output;
+	}
+
+	/**
 	 * Get the current user's shared posts.
 	 */
 	function get_shared() {
@@ -386,6 +403,7 @@ class DraftsForFriends	{
 	 */
 	function output_existing_menu_sub_admin_page() {
 
+		// Going to keep
 		if ( isset( $_POST['drafts-for-friends_submit'] ) && $_POST['drafts-for-friends_submit'] ) {
 			$t = $this->process_post_options( $_POST );
 		} elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'extend') {
@@ -527,23 +545,6 @@ class DraftsForFriends	{
 			$this->shared_post = null;
 			return $posts;
 		}
-	}
-
-	/**
-	 * Build the measure select.
-	 */
-	function tmpl_measure_select() {
-		$secs 	= __('seconds', 'drafts-for-friends');
-		$mins 	= __('minutes', 'drafts-for-friends');
-		$hours 	= __('hours', 'drafts-for-friends');
-		$days 	= __('days', 'drafts-for-friends');
-		$output = '<select name="measure">
-				<option value="s">' . esc_html( $secs ) . '</option>
-				<option value="m">' . esc_html( $mins ) . '</option>
-				<option value="h" selected="selected">' . esc_html( $hours ) . '</option>
-				<option value="d">' . esc_html( $days ) . '</option>
-			</select>';
-		return $output;
 	}
 
 }
