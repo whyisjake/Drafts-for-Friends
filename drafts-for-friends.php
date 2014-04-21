@@ -420,30 +420,28 @@ class DraftsForFriends	{
 					if ( $s ) :
 						foreach( $s as $share ): ?>
 							<tr class="<?php echo esc_attr( $share['key'] ); ?>">
-								<td><?php echo absint( $share['id'] ); ?></td>
-								<td>
+								<td class="id"><?php echo absint( $share['id'] ); ?></td>
+								<td class="title">
 									<a href="<?php echo esc_url( $this->get_share_url( $share ) ); ?>"><?php echo esc_html( get_the_title( $share['id'] ) ); ?></a> - <small><strong><?php echo esc_html( ucfirst( get_post_status( absint( $share['id'] ) ) ) ); ?></strong></small>
 									<div class="row-actions">
 										<span class="edit"><a href="<?php echo get_edit_post_link( $share['id'] ); ?>" title="Edit this item">Edit</a> | </span>
 										<span class="view"><a href="<?php echo $this->get_share_url( $share ); ?>" title="Preview" rel="permalink">Preview</a></span>
 									</div>
 								</td>
-								<td><input type="url" name="" value="<?php echo esc_attr( esc_url( $this->get_share_url( $share ) ) ); ?>" placeholder=""></td>
+								<td class="share_url"><input type="url" name="" value="<?php echo esc_attr( esc_url( $this->get_share_url( $share ) ) ); ?>" placeholder=""></td>
 								</td>
-								<td><?php echo wp_kses_post( $this->get_expired_time( $share ) ); ?></td>
+								<td class="time"><?php echo wp_kses_post( $this->get_expired_time( $share ) ); ?></td>
 								<td class="actions">
-									<a class="button drafts-for-friends-extend edit" id="drafts-for-friends-extend-link-<?php echo esc_attr( $share['key'] ); ?>"
-										href="javascript:drafts-for-friends.toggle_extend('<?php echo esc_js( $share['key'] ); ?>');">
-											<?php _e('Extend', 'drafts-for-friends'); ?>
-									</a>
-									<form class="drafts-for-friends-extend" id="<?php echo esc_attr( 'drafts-for-friends-extend-form-' . $share['key'] ); ?>" method="post">
+									<a class="button drafts-for-friends-extend-button edit" id="drafts-for-friends-extend-link-<?php echo esc_attr( $share['key'] ); ?>" data-key="<?php echo esc_attr( $share['key'] ); ?>" href="#"><?php _e('Extend', 'drafts-for-friends'); ?></a>
+									<form class="drafts-for-friends-extend" data-key="<?php echo esc_attr( $share['key'] ); ?>" id="<?php echo esc_attr( 'drafts-for-friends-extend-form-' . $share['key'] ); ?>" method="post">
 										<?php wp_nonce_field( 'extend', 'extend' ); ?>
-										<input type="hidden" name="action" value="extend">
-										<input type="hidden" name="key" value="<?php echo $share['key']; ?>" />
+										<input type="hidden" name="action" value="process_extend">
+										<input type="hidden" name="key" value="<?php echo esc_attr( $share['key'] ); ?>" />
 										<input type="submit" class="button submit-extend" name="drafts-for-friends_extend_submit" value="<?php esc_attr_e('Extend', 'drafts-for-friends'); ?>"/>
 										<?php _e('by', 'drafts-for-friends');?>
+										<input name="expires" type="number" min="0" step="1" value="2" size="4"/>
 										<?php echo $this->tmpl_measure_select(); ?>
-										<a class="drafts-for-friends-extend-cancel" href="javascript:drafts-for-friends.cancel_extend('<?php echo esc_js( $share['key'] ); ?>');"><?php _e('Cancel', 'drafts-for-friends'); ?></a>
+										<a class="drafts-for-friends-extend-cancel" data-key="<?php echo esc_attr( $share['key'] ); ?>" href=""><?php _e('Cancel', 'drafts-for-friends'); ?></a>
 									</form>
 								</td>
 								<td class="actions">
@@ -459,7 +457,12 @@ class DraftsForFriends	{
 			<h3><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h3>
 			<form id="drafts-for-friends-share" action="" method="post">
 				<p><?php echo $this->drafts_dropdown(); ?></p>
-				<p><input type="submit" class="button" name="drafts-for-friends_submit" value="<?php esc_attr_e('Share it', 'drafts-for-friends'); ?>" /><?php _e('for', 'drafts-for-friends'); ?><?php echo $this->tmpl_measure_select(); ?>.</p>
+				<p>
+					<input type="submit" class="button" name="drafts-for-friends_submit" value="<?php esc_attr_e('Share it', 'drafts-for-friends'); ?>" />
+					<?php _e('for', 'drafts-for-friends'); ?>
+					<input name="expires" type="number" min="0" step="1" value="2" size="4"/>
+					<?php echo $this->tmpl_measure_select(); ?>.
+				</p>
 			</form>
 		</div>
 	<?php
@@ -533,13 +536,12 @@ class DraftsForFriends	{
 		$mins 	= __('minutes', 'drafts-for-friends');
 		$hours 	= __('hours', 'drafts-for-friends');
 		$days 	= __('days', 'drafts-for-friends');
-		$output = '<input name="expires" type="number" min="0" step="1" value="2" size="4"/>
-					<select name="measure">
-						<option value="s">' . esc_html( $secs ) . '</option>
-						<option value="m">' . esc_html( $mins ) . '</option>
-						<option value="h" selected="selected">' . esc_html( $hours ) . '</option>
-						<option value="d">' . esc_html( $days ) . '</option>
-					</select>';
+		$output = '<select name="measure">
+				<option value="s">' . esc_html( $secs ) . '</option>
+				<option value="m">' . esc_html( $mins ) . '</option>
+				<option value="h" selected="selected">' . esc_html( $hours ) . '</option>
+				<option value="d">' . esc_html( $days ) . '</option>
+			</select>';
 		return $output;
 	}
 
