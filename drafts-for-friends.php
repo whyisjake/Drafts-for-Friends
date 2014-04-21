@@ -48,6 +48,9 @@ class DraftsForFriends	{
 
 		$this->shared_post = null;
 
+		// Start the AJAX requests with the
+		add_action( 'wp_ajax_process_delete', array( $this, 'process_delete' ) );
+
 	}
 
 	function admin_page_init() {
@@ -117,7 +120,7 @@ class DraftsForFriends	{
 				// Time to save the post.
 				default:
 					$this->user_options['shared'][] = array(
-						'id' => $p->ID,
+						'id' => $params['post_id'],
 						'expires' => time() + $this->calc( $params ),
 						'key' => $this->namespace . '-' . mt_rand()
 						);
@@ -136,6 +139,8 @@ class DraftsForFriends	{
 	 */
 	function process_delete( $params ) {
 
+		$params = ( empty( $params ) ) ? $_GET : $params;
+
 		// Check the nonce.
 		if ( ! wp_verify_nonce( $_GET['nonce'], 'delete' ) )
 			die( 'The nonce failed, and we couldn\'t go any further...' );
@@ -143,7 +148,7 @@ class DraftsForFriends	{
 		$shared = array();
 
 		foreach( $this->user_options['shared'] as $share ) {
-			if ( $share['key'] == $params['key'] ) {
+			if ( isset( $share['key'] ) && $share['key'] == $params['key'] ) {
 				continue;
 			}
 			$shared[] = $share;
@@ -151,7 +156,11 @@ class DraftsForFriends	{
 		$this->user_options['shared'] = $shared;
 		$this->save_admin_options();
 
-		return __('Shared post has been successfully deleted.', 'draftsforfriends');
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			die( __('Shared post has been successfully deleted.', 'draftsforfriends') );
+		} else {
+			return __('Shared post has been successfully deleted.', 'draftsforfriends');
+		}
 	}
 
 	/**
@@ -262,7 +271,7 @@ class DraftsForFriends	{
 		$delete_url = admin_url( 'edit.php' );
 		$args = array(
 			'page'		=> 'drafts-for-friends',
-			'action' 	=> 'delete',
+			'action' 	=> 'process_delete',
 			'key'		=> $share['key'],
 			'nonce'		=> wp_create_nonce( 'delete' ),
 			);
@@ -333,7 +342,7 @@ class DraftsForFriends	{
 			$t = $this->process_post_options( $_POST );
 		} elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'extend') {
 			$t = $this->process_extend( $_POST );
-		} elseif ( isset( $_GET['action'] ) && $_GET['action'] == 'delete' ) {
+		} elseif ( isset( $_GET['action'] ) && $_GET['action'] == 'process_delete' ) {
 			$t = $this->process_delete( $_GET );
 		} ?>
 
@@ -341,10 +350,10 @@ class DraftsForFriends	{
 
 			<h2><?php _e('Drafts for Friends', 'draftsforfriends'); ?></h2>
 
-
-			<?php if ( isset( $t ) ): ?>
-				<div id="message fade in" class="updated fade"><?php echo $t; ?></div>
-			<?php endif; ?>
+			<div class="updated hide">
+				<?php if ( isset( $t ) )
+					echo esc_html( $t ); ?>
+			</div>
 
 			<h3><?php _e('Currently Shared Drafts', 'draftsforfriends'); ?></h3>
 
@@ -363,7 +372,7 @@ class DraftsForFriends	{
 					<?php $s = $this->get_shared();
 					if ( $s ) :
 						foreach( $s as $share ): ?>
-							<tr>
+							<tr class="<?php echo esc_attr( $share['key'] ); ?>">
 								<td><?php echo absint( $share['id'] ); ?></td>
 								<td>
 									<a href="<?php echo esc_url( $this->get_share_url( $share ) ); ?>"><?php echo esc_html( get_the_title( $share['id'] ) ); ?></a> - <small><strong><?php echo esc_html( ucfirst( get_post_status( absint( $share['id'] ) ) ) ); ?></strong></small>
@@ -391,7 +400,7 @@ class DraftsForFriends	{
 									</form>
 								</td>
 								<td class="actions">
-									<a class="delete button" href="<?php echo esc_url( $this->get_delete_url( $share ) ); ?>"><?php echo esc_html( __('Delete', 'draftsforfriends') ); ?></a>
+									<a class="delete button delete-draft-link" data-share="<?php echo esc_attr( $share['key'] ); ?>" data-id="<?php echo esc_attr( $share['id'] ); ?>" href="<?php echo esc_url( $this->get_delete_url( $share ) ); ?>"><?php echo esc_html( __('Delete', 'draftsforfriends') ); ?></a>
 								</td>
 							</tr><?php
 						endforeach;
@@ -456,6 +465,9 @@ class DraftsForFriends	{
 	}
 
 
+	/**
+	 * If the current post is a shared post, add it to the array.
+	 */
 	function the_posts_intercept( $posts ) {
 
 		if ( empty( $posts ) && ! is_null( $this->shared_post ) ) {
@@ -466,6 +478,9 @@ class DraftsForFriends	{
 		}
 	}
 
+	/**
+	 * Build the measure select.
+	 */
 	function tmpl_measure_select() {
 		$secs 	= __('seconds', 'draftsforfriends');
 		$mins 	= __('minutes', 'draftsforfriends');

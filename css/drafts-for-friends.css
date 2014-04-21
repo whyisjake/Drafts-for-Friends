@@ -17,3 +17,7 @@ th.actions,
 td.actions {
 	text-align: center;
 }
+
+.hide {
+	display: none;
+}

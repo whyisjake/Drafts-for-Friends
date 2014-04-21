@@ -1,4 +1,3 @@
-
 // The old Javascript, will be removing this shortly...
 jQuery(function() {
 	jQuery('form.draftsforfriends-extend').hide();
@@ -20,6 +19,31 @@ window.draftsforfriends = {
 
 // Here is the start of the new stuff, not working yet.
 jQuery( document ).ready( function( $ ) {
+
+	// Setup the get request to be handled with AJAX.
+	$('.delete-draft-link').click( function( e ) {
+
+		// After the click, prevent it from taking us to another page.
+		e.preventDefault();
+
+		// Get the hash value, and the URL to submit.
+		key = $(this).data( 'share' );
+		url = $(this).attr( 'href' );
+
+		// Hide the row.
+		$('tr.' + key ).slideUp();
+
+		// Send off the AJAX request.
+		$.ajax({
+			url: ajaxurl,
+			data: url,
+			type: 'GET',
+			success: function( data ){
+				$('.updated').html( data ).slideDown().delay( 10000 ).slideUp();
+			}
+		});
+
+	});
 
 	$( '.submit-extend' ).submit( function( e ) {
 
