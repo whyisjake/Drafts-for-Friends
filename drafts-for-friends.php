@@ -55,7 +55,6 @@ class DraftsForFriends	{
 			wp_enqueue_script('jquery');
 			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery'), $this->version );
 			wp_enqueue_style( $this->slug, plugins_url( 'css/drafts-for-friends.css', __FILE__ ), '', $this->version );
-			add_action('admin_head', array( $this, 'print_admin_css' ) );
 		}
 	}
 
@@ -482,8 +481,6 @@ class DraftsForFriends	{
 		return $output;
 	}
 
-	function print_admin_css() {
-	}
 }
 
 $drafts = new DraftsForFriends();
