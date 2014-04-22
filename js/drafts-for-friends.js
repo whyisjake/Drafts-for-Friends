@@ -127,9 +127,9 @@ $( '.drafts-for-friends-share' ).submit(
 			url: ajaxurl,
 			data: form,
 			type: 'POST',
-			success: function( data ){
-				$('.widefat tr:last').after( data );
-				$('span.loading').html();
+			success: function( data ) {
+				$( 'span.loading' ).empty();
+				$( '.widefat tr:last' ).after( data );
 			}
 		});
 	});
