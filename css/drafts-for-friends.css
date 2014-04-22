@@ -6,7 +6,15 @@ form.drafts-for-friends-extend {
 form.drafts-for-friends-extend,
 form.drafts-for-friends-extend input,
 form.drafts-for-friends-extend select {
-	font-size: 11px;
+	font-size: 13.5px;
+}
+
+.widefat {
+	font-size: 13.5px;
+}
+
+.widefat a {
+	font-size: 13.5px;
 }
 
 th.actions,
