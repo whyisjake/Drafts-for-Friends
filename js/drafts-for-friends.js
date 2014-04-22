@@ -28,7 +28,7 @@ jQuery( document ).ready( function( $ ) {
 	});
 
 	// Actions for what happens when the extend button is clicked.
-	$( '.drafts-for-friends-extend-button' ).click( function( e ) {
+	$( document ).on('click', '.drafts-for-friends-extend-button', function( e ) {
 
 		// Prevent the click from doing anything
 		e.preventDefault();
@@ -44,7 +44,7 @@ jQuery( document ).ready( function( $ ) {
 
 	});
 
-	$( '.drafts-for-friends-extend-cancel' ).click( function( e ) {
+	$( document ).on('click', '.drafts-for-friends-extend-cancel', function( e ) {
 
 		// Prevent the click from loading anything.
 		e.preventDefault();
