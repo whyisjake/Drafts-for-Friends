@@ -7,6 +7,7 @@ Author: Jake Spurlock
 Version: 0.5
 Author URI: http://jakespurlock.com
 Text Domain: drafts-for-friends
+License: license.txt
 */
 
 class DraftsForFriends	{
@@ -116,7 +117,7 @@ class DraftsForFriends	{
 
 		// Setup some variables, yo.
 		$expiration = MINUTE_IN_SECONDS;
-		$multiply = MINUTE_IN_SECONDS;
+		$multiply 	= MINUTE_IN_SECONDS;
 
 		// Make sure that we have a valid number as the expiration value
 		if ( isset( $params['expires'] ) )
