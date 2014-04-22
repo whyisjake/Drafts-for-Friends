@@ -103,24 +103,4 @@ jQuery( document ).ready( function( $ ) {
 		});
 	});
 
-	$('.drafts-for-friends-submit').submit( function( e ) {
-
-		console.log( 'Click' );
-
-		// Prevent the form from being submitted.
-		e.preventDefault();
-
-		// Grab all of the inputs
-		var inputs = $( this + ' :input' );
-
-		// Grab all of the form data.
-		var form = {};
-		inputs.each( function() {
-			form[ this.name ] = $( this ).val();
-		});
-
-		console.log( form );
-
-	});
-
 });
