@@ -54,8 +54,6 @@ class DraftsForFriends	{
 
 		$this->save_admin_options();
 
-		$this->shared_post = null;
-
 		// Start the AJAX requests with the
 		add_action( 'wp_ajax_process_delete', array( $this, 'process_delete' ) );
 		add_action( 'wp_ajax_process_extend', array( $this, 'process_extend' ) );
