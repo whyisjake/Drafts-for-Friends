@@ -553,14 +553,16 @@ class DraftsForFriends	{
 				</tbody>
 			</table>
 			<h3><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h3>
-			<form id="drafts-for-friends-share" action="" method="post">
-				<p><?php echo $this->drafts_dropdown(); ?></p>
-				<p>
+			<form class="drafts-for-friends-share" method="post">
+				<div><?php echo $this->drafts_dropdown(); ?> <span class="loading"></span></div>
+				<div>
+					<?php wp_nonce_field( 'process', 'process' ); ?>
+					<input type="hidden" name="action" value="process_post_options">
 					<input type="submit" class="button" name="drafts-for-friends_submit" value="<?php esc_attr_e('Share it', 'drafts-for-friends'); ?>" />
 					<?php _e('for', 'drafts-for-friends'); ?>
 					<input name="expires" type="number" min="0" step="1" value="2" size="4"/>
 					<?php echo $this->tmpl_measure_select(); ?>.
-				</p>
+				</div>
 			</form>
 		</div>
 	<?php
