@@ -3,7 +3,7 @@ jQuery( document ).ready( function( $ ) {
 	$('form.drafts-for-friends-extend').hide();
 
 	// Setup the get request to be handled with AJAX.
-	$('.delete-draft-link').click( function( e ) {
+	$( document ).on( 'click', '.delete-draft-link', function( e ) {
 
 		// After the click, prevent it from taking us to another page.
 		e.preventDefault();
@@ -21,14 +21,14 @@ jQuery( document ).ready( function( $ ) {
 			data: url,
 			type: 'GET',
 			success: function( data ){
-				$('.updated').html( data ).slideDown();
+				$('.updated').html( '<p>' + data + '</p>' ).slideDown();
 			}
 		});
 
 	});
 
 	// Actions for what happens when the extend button is clicked.
-	$( document ).on('click', '.drafts-for-friends-extend-button', function( e ) {
+	$( document ).on( 'click', '.drafts-for-friends-extend-button', function( e ) {
 
 		// Prevent the click from doing anything
 		e.preventDefault();
@@ -44,7 +44,7 @@ jQuery( document ).ready( function( $ ) {
 
 	});
 
-	$( document ).on('click', '.drafts-for-friends-extend-cancel', function( e ) {
+	$( document ).on( 'click', '.drafts-for-friends-extend-cancel', function( e ) {
 
 		// Prevent the click from loading anything.
 		e.preventDefault();
@@ -58,7 +58,7 @@ jQuery( document ).ready( function( $ ) {
 
 	});
 
-	$( '.drafts-for-friends-extend' ).submit( function( e ) {
+	$( document ).on( 'submit', '.drafts-for-friends-extend', function( e ) {
 
 		// Prevent the button from sending the form.
 		e.preventDefault();
@@ -94,6 +94,7 @@ jQuery( document ).ready( function( $ ) {
 				return_obj = JSON.parse( data );
 				if ( return_obj.time ) {
 					$( 'tr.' + key + ' td.time' ).html( return_obj.time );
+					$('.updated').html( '<p>' + return_obj.message + '</p>' ).slideDown();
 				}
 				if ( return_obj.error ) {
 					$('.updated').addClass('error').html( return_obj.error ).slideDown().delay( 10000 ).slideUp();
@@ -103,9 +104,7 @@ jQuery( document ).ready( function( $ ) {
 		});
 	});
 
-$( '.drafts-for-friends-share' ).submit(
-
-	function( e ) {
+	$( '.drafts-for-friends-share' ).submit( function( e ) {
 
 		// Prevent the button from sending the form.
 		e.preventDefault();
@@ -130,6 +129,7 @@ $( '.drafts-for-friends-share' ).submit(
 			success: function( data ) {
 				$( 'span.loading' ).empty();
 				$( '.widefat tr:last' ).after( data );
+				$('.updated').html( '<p>' + drafts.added + '</p>' ).slideDown();
 			}
 		});
 	});
