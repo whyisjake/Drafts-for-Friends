@@ -21,7 +21,7 @@ jQuery( document ).ready( function( $ ) {
 			data: url,
 			type: 'GET',
 			success: function( data ){
-				$('.updated').html( data ).slideDown().delay( 10000 ).slideUp();
+				$('.updated').html( data ).slideDown();
 			}
 		});
 
