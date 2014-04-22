@@ -351,9 +351,13 @@ class DraftsForFriends	{
 	 * Get a boolean value to see whether the datestamp is in the past or future
 	 */
 	function is_in_the_past( $date ) {
+
+		// Get the expired time.
 		$expire_time = new DateTime();
 		$expire_time->setTimezone( new DateTimeZone( get_option('timezone_string') ) );
 		$expire_time->setTimestamp( $date );
+
+		// Get the current time.
 		$current_time = new DateTime();
 
 		if ( $expire_time > $current_time ) {
@@ -474,7 +478,8 @@ class DraftsForFriends	{
 				</tbody>
 			</table>
 			<h3><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h3>
-			<form id="drafts-for-friends-share" action="" method="post">
+			<form class="drafts-for-friends-share">
+				<input type="hidden" name="action" value="process_post_options">
 				<p><?php echo $this->drafts_dropdown(); ?></p>
 				<p>
 					<input type="submit" class="button" name="drafts-for-friends_submit" value="<?php esc_attr_e('Share it', 'drafts-for-friends'); ?>" />
