@@ -510,6 +510,7 @@ class DraftsForFriends	{
 	 */
 	function output_existing_menu_sub_admin_page() {
 
+		// Keeping these on here for now, in the instance the Javascript is disabled. (Could probably remove tho...)
 		if ( isset( $_POST['drafts-for-friends_submit'] ) && $_POST['drafts-for-friends_submit'] ) {
 			$t = $this->process_post_options( $_POST );
 		} elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'extend') {
