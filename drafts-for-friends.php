@@ -64,7 +64,7 @@ class DraftsForFriends	{
 		// If the user didn't have anything before, save an empty array.
 		$this->save_admin_options();
 
-		// Start the AJAX requests with the
+		// Add actions for the AJAX calls
 		add_action( 'wp_ajax_process_delete', array( $this, 'process_delete' ) );
 		add_action( 'wp_ajax_process_extend', array( $this, 'process_extend' ) );
 		add_action( 'wp_ajax_process_post_options', array( $this, 'process_post_options' ) );
@@ -448,10 +448,37 @@ class DraftsForFriends	{
 	 */
 	function get_expired_time( $share ) {
 		if ( $this->is_in_the_past( $share['expires'] ) ) {
-			return 'Expired: <time datetime="' . esc_attr( date('Y-m-d', $share['expires'] ) ) . '">' . date('l jS \of F Y h:i A', $share['expires'] ). '</time>';
+
+			$offset = $this->get_timezone_offset( get_option( 'timezone_string' ), 'UTC' );
+			if ( $offset ) {
+				$time = $share['expires'] + $offset;
+				return 'Expired: <time datetime="' . esc_attr( date('Y-m-d', $time ) ) . '">' . esc_html( date('l jS \of F Y h:i A', $time ) ) . '</time>';
+			} else {
+				return 'Expired: <time datetime="' . esc_attr( date('Y-m-d', $share['expires'] ) ) . '">' . esc_html( date('l jS \of F Y h:i A', $share['expires'] ) ) . '</time>';
+			}
 		} else {
 			return human_time_diff( intval( $share['expires'] ), current_time( 'timestamp', get_option( 'timezone_string' ) ) );
 		}
+	}
+
+	/**
+	* 	Returns the offset from the origin timezone to the remote timezone, in seconds.
+	*	@param $remote_tz;
+	*	@param $origin_tz; If null the servers current timezone is used as the origin.
+	*	@return int;
+	*/
+	function get_timezone_offset( $remote_tz, $origin_tz = null ) {
+		if ( $origin_tz === null ) {
+			if ( !is_string( $origin_tz = date_default_timezone_get() ) ) {
+				return false; // A UTC timestamp was returned -- bail out!
+			}
+		}
+		$origin_dtz = new DateTimeZone( $origin_tz );
+		$remote_dtz = new DateTimeZone( $remote_tz );
+		$origin_dt = new DateTime( "now", $origin_dtz );
+		$remote_dt = new DateTime( "now", $remote_dtz );
+		$offset = $origin_dtz->getOffset( $origin_dt ) - $remote_dtz->getOffset( $remote_dt );
+		return $offset;
 	}
 
 	/**
