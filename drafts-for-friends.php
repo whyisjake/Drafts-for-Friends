@@ -263,9 +263,11 @@ class DraftsForFriends	{
 		if ( $posts == false ) {
 			// Setup the query.
 			$args = array(
+				'author'		=> absint( $uid ),
 				'post_status'	=> apply_filters( 'friends_statuses', $statuses ),
 				'post_type'		=> apply_filters( 'friends_get_post_types', array( 'post', 'page' ) ),
 				'posts_per_page'=> apply_filters( 'friends_posts_per_page', 20 ),
+
 				);
 			$posts = new WP_Query( $args );
 			wp_cache_set( $uid . '_unpub_posts', $posts );
