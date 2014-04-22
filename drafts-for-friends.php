@@ -452,12 +452,12 @@ class JS_Drafts_For_Friends	{
 			$offset = $this->get_timezone_offset( get_option( 'timezone_string' ), 'UTC' );
 			if ( $offset ) {
 				$time = $share['expires'] + $offset;
-				return 'Expired: <time datetime="' . esc_attr( date('Y-m-d', $time ) ) . '">' . esc_html( date('l jS \of F Y h:i A', $time ) ) . '</time>';
+				return __( 'Expired: ', 'drafts-for-friends' ) . '<time datetime="' . esc_attr( date('Y-m-d', $time ) ) . '">' . esc_html( date('l jS \of F Y h:i A', $time ) ) . '</time>';
 			} else {
-				return 'Expired: <time datetime="' . esc_attr( date('Y-m-d', $share['expires'] ) ) . '">' . esc_html( date('l jS \of F Y h:i A', $share['expires'] ) ) . '</time>';
+				return __( 'Expired: ', 'drafts-for-friends' ) . '<time datetime="' . esc_attr( date('Y-m-d', $share['expires'] ) ) . '">' . esc_html( date('l jS \of F Y h:i A', $share['expires'] ) ) . '</time>';
 			}
 		} else {
-			return human_time_diff( intval( $share['expires'] ), current_time( 'timestamp', get_option( 'timezone_string' ) ) );
+			return __( 'Expires in ', $this->slug  ) . human_time_diff( intval( $share['expires'] ), current_time( 'timestamp', get_option( 'timezone_string' ) ) );
 		}
 	}
 
