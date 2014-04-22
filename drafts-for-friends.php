@@ -29,6 +29,12 @@ class DraftsForFriends	{
 	 */
 	protected $slug = 'drafts-for-friends';
 
+	/**
+	 * Set the shared post to be null as a default.
+	 * @var null
+	 */
+	protected $shared_post = null;
+
 	public function __construct(){
     	add_action( 'init', array( $this, 'init' ) );
 	}
@@ -48,10 +54,13 @@ class DraftsForFriends	{
 		// Enqueue the admin scripts/styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_resources' ) );
 
+		// Get the stored values in the database.
 		$this->admin_options = $this->get_admin_options();
 
+		// Line up the stored values to the current user.
 		$this->user_options = ( $current_user->id > 0 && isset( $this->admin_options[ $current_user->id ] ) ) ? $this->admin_options[ $current_user->id ] : array();
 
+		// If the user didn't have anything before, save an empty array.
 		$this->save_admin_options();
 
 		// Start the AJAX requests with the
@@ -60,9 +69,12 @@ class DraftsForFriends	{
 
 	}
 
-
+	/**
+	 * If we are on the Drafts for Friends page, load the CSS/JS.
+	 * At the same time, set a javascript variable.
+	 */
 	public function load_resources() {
-		$screen =  get_current_screen();
+		$screen = get_current_screen();
 		if ( is_admin() && $screen->id == 'posts_page_drafts-for-friends' ) {
 			wp_enqueue_script('jquery');
 			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery'), $this->version );
@@ -71,12 +83,18 @@ class DraftsForFriends	{
 		}
 	}
 
-	function get_admin_options() {
+	/**
+	 * Get the stored options for all of the shared objects.
+	 */
+	public function get_admin_options() {
 		$saved_options = get_option('shared');
 		return is_array( $saved_options ) ? $saved_options : array();
 	}
 
-    function save_admin_options(){
+	/**
+	 * Store/save the shared objects.
+	 */
+    public function save_admin_options(){
         global $current_user;
         if ( $current_user->id > 0 ) {
             $this->admin_options[ $current_user->id ] = $this->user_options;
@@ -84,14 +102,16 @@ class DraftsForFriends	{
         update_option( 'shared', $this->admin_options );
     }
 
-    // Add the admin page.
+    /**
+     * Add the admin page.
+     */
 	function add_admin_pages(){
 		add_submenu_page('edit.php', __('Drafts for Friends', 'drafts-for-friends'), __('Drafts for Friends', 'drafts-for-friends'), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
 	}
 
 	/**
-	  * Calculate the expiration date.
-	  */
+	 * Calculate the expiration date.
+	 */
 	function calc( $params ) {
 
 		// Setup some variables, yo.
@@ -122,6 +142,9 @@ class DraftsForFriends	{
 		return absint( $new_date );
 	}
 
+	/**
+	 * Process the posts/urls and set an expiration date.
+	 */
 	function process_post_options( $params ) {
 
 		// Get the current user.
@@ -407,7 +430,6 @@ class DraftsForFriends	{
 	 */
 	function output_existing_menu_sub_admin_page() {
 
-		// Going to keep
 		if ( isset( $_POST['drafts-for-friends_submit'] ) && $_POST['drafts-for-friends_submit'] ) {
 			$t = $this->process_post_options( $_POST );
 		} elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'extend') {
