@@ -67,6 +67,7 @@ class DraftsForFriends	{
 		// Start the AJAX requests with the
 		add_action( 'wp_ajax_process_delete', array( $this, 'process_delete' ) );
 		add_action( 'wp_ajax_process_extend', array( $this, 'process_extend' ) );
+		add_action( 'wp_ajax_process_post_options', array( $this, 'process_post_options' ) );
 
 	}
 
@@ -147,6 +148,16 @@ class DraftsForFriends	{
 	 * Process the posts/urls and set an expiration date.
 	 */
 	function process_post_options( $params ) {
+
+		// If we are doing a normal $_GET request, the params get passed
+		// through the page load, if this comes over AJAX, we need to grab
+		// them for use in the function.
+		$params = ( empty( $params ) ) ? $_POST : $params;
+
+		// Check the nonce.
+		if ( ! wp_verify_nonce( $params['process'], 'process' ) )
+			die( 'The nonce failed, and we couldn\'t go any further...' );
+
 
 		// Get the current user.
 		global $current_user;
