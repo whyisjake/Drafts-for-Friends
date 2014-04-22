@@ -37,7 +37,7 @@ class DraftsForFriends	{
 	protected $shared_post = null;
 
 	public function __construct(){
-    	add_action( 'init', array( $this, 'init' ) );
+		add_action( 'init', array( $this, 'init' ) );
 	}
 
 	public function init() {
@@ -96,17 +96,17 @@ class DraftsForFriends	{
 	/**
 	 * Store/save the shared objects.
 	 */
-    public function save_admin_options(){
-        global $current_user;
-        if ( $current_user->id > 0 ) {
-            $this->admin_options[ $current_user->id ] = $this->user_options;
-        }
-        update_option( 'shared', $this->admin_options );
-    }
+	public function save_admin_options(){
+		global $current_user;
+		if ( $current_user->id > 0 ) {
+			$this->admin_options[ $current_user->id ] = $this->user_options;
+		}
+		update_option( 'shared', $this->admin_options );
+	}
 
-    /**
-     * Add the admin page.
-     */
+	/**
+	 * Add the admin page.
+	 */
 	function add_admin_pages(){
 		add_submenu_page('edit.php', __('Drafts for Friends', 'drafts-for-friends'), __('Drafts for Friends', 'drafts-for-friends'), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
 	}
