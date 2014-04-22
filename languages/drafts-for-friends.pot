@@ -1,106 +1,114 @@
 # DRAFTS FOR FRIENDS
 # This file is distributed under the same license as the PACKAGE package.
-# JAKE SPURLOCK <WHYISJAKE@GMAIL.COM>, 2014.
+# JAKE SPURLOCK <WHYISJAKE@GMAIL.com>, 2014.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: DraftsforFriends\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-21 01:37-0700\n"
+"POT-Creation-Date: 2014-04-21 22:26-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: JAKE SPURLOCK <WHYISJAKE@GMAIL.COM>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: drafts-for-friends.php:89 drafts-for-friends.php:383
-#: drafts-for-friends.php:444
+#: drafts-for-friends.php:91 drafts-for-friends.php:422
+#: drafts-for-friends.php:481
 msgid "Drafts for Friends"
 msgstr ""
 
-#: drafts-for-friends.php:141
+#: drafts-for-friends.php:143
 msgid "There is no such post!"
 msgstr ""
 
-#: drafts-for-friends.php:146
+#: drafts-for-friends.php:148
 msgid "The post is published!"
 msgstr ""
 
-#: drafts-for-friends.php:192 drafts-for-friends.php:194
+#: drafts-for-friends.php:194 drafts-for-friends.php:196
 msgid "Shared post has been successfully deleted."
 msgstr ""
 
-#: drafts-for-friends.php:288
+#: drafts-for-friends.php:216
+msgid "The nonce failed, and we couldn't go any further..."
+msgstr ""
+
+#: drafts-for-friends.php:231 drafts-for-friends.php:236
+msgid "Post sharing time has been updated."
+msgstr ""
+
+#: drafts-for-friends.php:306
 msgid "Choose a draft:"
 msgstr ""
 
-#: drafts-for-friends.php:390
-msgid "Currently Shared Drafts"
-msgstr ""
-
-#: drafts-for-friends.php:396
-msgid "ID"
-msgstr ""
-
-#: drafts-for-friends.php:397
-msgid "Title"
-msgstr ""
-
-#: drafts-for-friends.php:398
-msgid "Link"
-msgstr ""
-
-#: drafts-for-friends.php:399
-msgid "Expires"
-msgstr ""
-
-#: drafts-for-friends.php:400
-msgid "Actions"
-msgstr ""
-
-#: drafts-for-friends.php:422 drafts-for-friends.php:428
-msgid "Extend"
-msgstr ""
-
-#: drafts-for-friends.php:429
-msgid "by"
-msgstr ""
-
-#: drafts-for-friends.php:431
-msgid "Cancel"
-msgstr ""
-
-#: drafts-for-friends.php:435
-msgid "Delete"
-msgstr ""
-
-#: drafts-for-friends.php:440
-msgid "No shared drafts!"
-msgstr ""
-
-#: drafts-for-friends.php:447
-msgid "Share it"
-msgstr ""
-
-#: drafts-for-friends.php:447
-msgid "for"
-msgstr ""
-
-#: drafts-for-friends.php:517
+#: drafts-for-friends.php:387
 msgid "seconds"
 msgstr ""
 
-#: drafts-for-friends.php:518
+#: drafts-for-friends.php:388
 msgid "minutes"
 msgstr ""
 
-#: drafts-for-friends.php:519
+#: drafts-for-friends.php:389
 msgid "hours"
 msgstr ""
 
-#: drafts-for-friends.php:520
+#: drafts-for-friends.php:390
 msgid "days"
+msgstr ""
+
+#: drafts-for-friends.php:429
+msgid "Currently Shared Drafts"
+msgstr ""
+
+#: drafts-for-friends.php:435
+msgid "ID"
+msgstr ""
+
+#: drafts-for-friends.php:436
+msgid "Title"
+msgstr ""
+
+#: drafts-for-friends.php:437
+msgid "Link"
+msgstr ""
+
+#: drafts-for-friends.php:438
+msgid "Expires"
+msgstr ""
+
+#: drafts-for-friends.php:439
+msgid "Actions"
+msgstr ""
+
+#: drafts-for-friends.php:459 drafts-for-friends.php:464
+msgid "Extend"
+msgstr ""
+
+#: drafts-for-friends.php:465
+msgid "by"
+msgstr ""
+
+#: drafts-for-friends.php:468
+msgid "Cancel"
+msgstr ""
+
+#: drafts-for-friends.php:472
+msgid "Delete"
+msgstr ""
+
+#: drafts-for-friends.php:477
+msgid "No shared drafts!"
+msgstr ""
+
+#: drafts-for-friends.php:485
+msgid "Share it"
+msgstr ""
+
+#: drafts-for-friends.php:486
+msgid "for"
 msgstr ""
