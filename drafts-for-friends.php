@@ -350,19 +350,15 @@ class DraftsForFriends	{
 		// Setup the drafts array.
 		$drafts = array();
 
-		// Let's setup the parents as the statuses.
-		foreach ( $posts->posts as $the_post ) {
-			$drafts[ $the_post->post_status ] = array();
-		}
-
-		// Now, loop again through all of the kids.
+		// Create the array of post drafts
 		foreach ( $posts->posts as $the_post ) {
 			$post_array = array(
-				'ID'			=> $the_post->ID,
-				'post_title'	=> $the_post->post_title
-				);
-			array_push($drafts[$the_post->post_status], $post_array);
+				'ID' 			=> $the_post->ID,
+				'post_title' 	=> $the_post->post_title
+			);
+			$drafts[ $the_post->post_status ][] = $post_array;
 		}
+
 		return $drafts;
 	}
 
