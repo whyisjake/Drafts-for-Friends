@@ -16,99 +16,99 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: drafts-for-friends.php:91 drafts-for-friends.php:422
-#: drafts-for-friends.php:481
+#: drafts-for-friends.php:111 drafts-for-friends.php:496
+#: drafts-for-friends.php:527
 msgid "Drafts for Friends"
 msgstr ""
 
-#: drafts-for-friends.php:143
+#: drafts-for-friends.php:176
 msgid "There is no such post!"
 msgstr ""
 
-#: drafts-for-friends.php:148
+#: drafts-for-friends.php:181
 msgid "The post is published!"
 msgstr ""
 
-#: drafts-for-friends.php:194 drafts-for-friends.php:196
-msgid "Shared post has been successfully deleted."
-msgstr ""
-
-#: drafts-for-friends.php:216
-msgid "The nonce failed, and we couldn't go any further..."
-msgstr ""
-
-#: drafts-for-friends.php:231 drafts-for-friends.php:236
-msgid "Post sharing time has been updated."
-msgstr ""
-
-#: drafts-for-friends.php:306
-msgid "Choose a draft:"
-msgstr ""
-
-#: drafts-for-friends.php:387
-msgid "seconds"
-msgstr ""
-
-#: drafts-for-friends.php:388
-msgid "minutes"
-msgstr ""
-
-#: drafts-for-friends.php:389
-msgid "hours"
-msgstr ""
-
-#: drafts-for-friends.php:390
-msgid "days"
-msgstr ""
-
-#: drafts-for-friends.php:429
-msgid "Currently Shared Drafts"
-msgstr ""
-
-#: drafts-for-friends.php:435
-msgid "ID"
-msgstr ""
-
-#: drafts-for-friends.php:436
-msgid "Title"
-msgstr ""
-
-#: drafts-for-friends.php:437
-msgid "Link"
-msgstr ""
-
-#: drafts-for-friends.php:438
-msgid "Expires"
-msgstr ""
-
-#: drafts-for-friends.php:439
-msgid "Actions"
-msgstr ""
-
-#: drafts-for-friends.php:459 drafts-for-friends.php:464
+#: drafts-for-friends.php:219 drafts-for-friends.php:224
 msgid "Extend"
 msgstr ""
 
-#: drafts-for-friends.php:465
+#: drafts-for-friends.php:225
 msgid "by"
 msgstr ""
 
-#: drafts-for-friends.php:468
+#: drafts-for-friends.php:228
 msgid "Cancel"
 msgstr ""
 
-#: drafts-for-friends.php:472
+#: drafts-for-friends.php:232
 msgid "Delete"
 msgstr ""
 
-#: drafts-for-friends.php:477
+#: drafts-for-friends.php:268 drafts-for-friends.php:270
+msgid "Shared post has been successfully deleted."
+msgstr ""
+
+#: drafts-for-friends.php:290
+msgid "The nonce failed, and we couldn't go any further..."
+msgstr ""
+
+#: drafts-for-friends.php:305 drafts-for-friends.php:310
+msgid "Post sharing time has been updated."
+msgstr ""
+
+#: drafts-for-friends.php:380
+msgid "Choose a draft:"
+msgstr ""
+
+#: drafts-for-friends.php:461
+msgid "seconds"
+msgstr ""
+
+#: drafts-for-friends.php:462
+msgid "minutes"
+msgstr ""
+
+#: drafts-for-friends.php:463
+msgid "hours"
+msgstr ""
+
+#: drafts-for-friends.php:464
+msgid "days"
+msgstr ""
+
+#: drafts-for-friends.php:503
+msgid "Currently Shared Drafts"
+msgstr ""
+
+#: drafts-for-friends.php:509
+msgid "ID"
+msgstr ""
+
+#: drafts-for-friends.php:510
+msgid "Title"
+msgstr ""
+
+#: drafts-for-friends.php:511
+msgid "Link"
+msgstr ""
+
+#: drafts-for-friends.php:512
+msgid "Expires"
+msgstr ""
+
+#: drafts-for-friends.php:513
+msgid "Actions"
+msgstr ""
+
+#: drafts-for-friends.php:523
 msgid "No shared drafts!"
 msgstr ""
 
-#: drafts-for-friends.php:485
+#: drafts-for-friends.php:533
 msgid "Share it"
 msgstr ""
 
-#: drafts-for-friends.php:486
+#: drafts-for-friends.php:534
 msgid "for"
 msgstr ""
