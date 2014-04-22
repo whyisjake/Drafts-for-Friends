@@ -151,9 +151,9 @@ class DraftsForFriends	{
 				// Time to save the post.
 				default:
 					$this->user_options['shared'][] = array(
-						'id' => $params['post_id'],
-						'expires' => time() + $this->calc( $params ),
-						'key' => $this->namespace . '-' . mt_rand()
+						'id' 		=> absint( $params['post_id'] ),
+						'expires' 	=> intval( time() + $this->calc( $params ) ),
+						'key' 		=> esc_attr( $this->namespace . '-' . mt_rand() ),
 						);
 					$this->save_admin_options();
 					break;
