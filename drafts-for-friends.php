@@ -10,7 +10,7 @@ Text Domain: drafts-for-friends
 License: license.txt
 */
 
-class DraftsForFriends	{
+class JS_Drafts_For_Friends	{
 
 	/**
 	 * Plugin version
@@ -111,14 +111,14 @@ class DraftsForFriends	{
 	/**
 	 * Add the admin page.
 	 */
-	function add_admin_pages(){
-		add_submenu_page('edit.php', __('Drafts for Friends', 'drafts-for-friends'), __('Drafts for Friends', 'drafts-for-friends'), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
+	public function add_admin_pages(){
+		add_submenu_page('edit.php', __( 'Drafts for Friends', 'drafts-for-friends' ), __('Drafts for Friends', 'drafts-for-friends' ), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
 	}
 
 	/**
 	 * Calculate the expiration date.
 	 */
-	function calc( $params ) {
+	private function calc( $params ) {
 
 		// Setup some variables, yo.
 		$expiration = MINUTE_IN_SECONDS;
@@ -151,7 +151,7 @@ class DraftsForFriends	{
 	/**
 	 * Process the posts/urls and set an expiration date.
 	 */
-	function process_post_options( $params ) {
+	public function process_post_options( $params ) {
 
 		// If we are doing a normal $_GET request, the params get passed
 		// through the page load, if this comes over AJAX, we need to grab
@@ -554,7 +554,9 @@ class DraftsForFriends	{
 			</table>
 			<h3><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h3>
 			<form class="drafts-for-friends-share" method="post">
-				<div><?php echo $this->drafts_dropdown(); ?> <span class="loading"></span></div>
+				<div>
+					<?php echo $this->drafts_dropdown(); ?> <span class="loading"></span>
+				</div>
 				<div>
 					<?php wp_nonce_field( 'process', 'process' ); ?>
 					<input type="hidden" name="action" value="process_post_options">
@@ -630,4 +632,4 @@ class DraftsForFriends	{
 
 }
 
-$drafts = new DraftsForFriends();
+$drafts = new JS_Drafts_For_Friends();
