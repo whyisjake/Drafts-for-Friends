@@ -102,4 +102,35 @@ jQuery( document ).ready( function( $ ) {
 			}
 		});
 	});
+
+$( '.drafts-for-friends-share' ).submit(
+
+	function( e ) {
+
+		// Prevent the button from sending the form.
+		e.preventDefault();
+
+		// Clear the current time, and add a loading .gif
+		$( 'span.loading' ).html( '<img src="' + drafts.loading_gif + '">' );
+
+		// Grab all of the inputs
+		var inputs = $( '.drafts-for-friends-share :input' );
+
+		// Grab all of the form data.
+		var form = {};
+		inputs.each( function() {
+			form[ this.name ] = $( this ).val();
+		});
+
+		// Send off the AJAX request.
+		$.ajax({
+			url: ajaxurl,
+			data: form,
+			type: 'POST',
+			success: function( data ){
+				$('.widefat tr:last').after( data );
+				$('span.loading').html();
+			}
+		});
+	});
 });
