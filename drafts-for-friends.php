@@ -478,8 +478,7 @@ class DraftsForFriends	{
 				</tbody>
 			</table>
 			<h3><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h3>
-			<form class="drafts-for-friends-share">
-				<input type="hidden" name="action" value="process_post_options">
+			<form id="drafts-for-friends-share" action="" method="post">
 				<p><?php echo $this->drafts_dropdown(); ?></p>
 				<p>
 					<input type="submit" class="button" name="drafts-for-friends_submit" value="<?php esc_attr_e('Share it', 'drafts-for-friends'); ?>" />
