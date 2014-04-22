@@ -183,12 +183,16 @@ class DraftsForFriends	{
 
 				// Time to save the post.
 				default:
-					$this->user_options['shared'][] = array(
+					$share = array(
 						'id' 		=> absint( $params['post_id'] ),
 						'expires' 	=> intval( time() + $this->calc( $params ) ),
 						'key' 		=> esc_attr( $this->namespace . '-' . mt_rand() ),
-						);
+					);
+					$this->user_options['shared'][] = $share;
 					$this->save_admin_options();
+					if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+						die( $this->row_builder( $share ) );
+					}
 					break;
 			}
 		}
