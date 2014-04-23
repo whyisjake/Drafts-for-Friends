@@ -92,8 +92,8 @@ class JS_Drafts_For_Friends	{
 	public function load_resources() {
 		$screen = get_current_screen();
 		if ( is_admin() && $screen->id == 'posts_page_drafts-for-friends' ) {
-			wp_enqueue_script('jquery');
-			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery'), $this->version );
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery' ), $this->version );
 			wp_enqueue_style( $this->slug, plugins_url( 'css/drafts-for-friends.css', __FILE__ ), '', $this->version );
 			$strings = array(
 				'loading_gif' 	=> esc_js( get_admin_url( '', '/images/wpspin_light.gif' ) ),
@@ -109,7 +109,7 @@ class JS_Drafts_For_Friends	{
 	 * @return array Array of saved drafts
 	 */
 	public function get_admin_options() {
-		$saved_options = get_option('shared');
+		$saved_options = get_option( 'shared' );
 		return is_array( $saved_options ) ? $saved_options : array();
 	}
 
@@ -128,7 +128,7 @@ class JS_Drafts_For_Friends	{
 	 * Add the admin page.
 	 */
 	public function add_admin_pages(){
-		add_submenu_page('edit.php', __( 'Drafts for Friends', 'drafts-for-friends' ), __( 'Drafts for Friends', 'drafts-for-friends' ), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
+		add_submenu_page( 'edit.php', __( 'Drafts for Friends', 'drafts-for-friends' ), __( 'Drafts for Friends', 'drafts-for-friends' ), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
 	}
 
 	/**
@@ -197,12 +197,12 @@ class JS_Drafts_For_Friends	{
 
 				// If there isn't a post, bounce...
 				case null || false :
-					return __('There is no such post!', 'drafts-for-friends');
+					return __( 'There is no such post!', 'drafts-for-friends' );
 					break;
 
 				// Is this a published post?
 				case 'publish':
-					return __('The post is published!', 'drafts-for-friends');
+					return __( 'The post is published!', 'drafts-for-friends' );
 					break;
 
 				// Time to save the post.
@@ -252,20 +252,20 @@ class JS_Drafts_For_Friends	{
 				<?php echo wp_kses_post( $this->get_expired_time( $share ) ); ?>
 			</td>
 			<td class="actions">
-				<a class="button drafts-for-friends-extend-button edit" id="drafts-for-friends-extend-link-<?php echo esc_attr( $share['key'] ); ?>" data-key="<?php echo esc_attr( $share['key'] ); ?>" href="#"><?php _e('Extend', 'drafts-for-friends'); ?></a>
+				<a class="button drafts-for-friends-extend-button edit" id="drafts-for-friends-extend-link-<?php echo esc_attr( $share['key'] ); ?>" data-key="<?php echo esc_attr( $share['key'] ); ?>" href="#"><?php _e( 'Extend', 'drafts-for-friends' ); ?></a>
 				<form class="drafts-for-friends-extend" data-key="<?php echo esc_attr( $share['key'] ); ?>" id="<?php echo esc_attr( 'drafts-for-friends-extend-form-' . $share['key'] ); ?>" method="post">
 					<?php wp_nonce_field( 'extend', 'extend' ); ?>
 					<input type="hidden" name="action" value="process_extend">
 					<input type="hidden" name="key" value="<?php echo esc_attr( $share['key'] ); ?>" />
-					<input type="submit" class="button submit-extend" name="drafts-for-friends_extend_submit" value="<?php esc_attr_e('Extend', 'drafts-for-friends'); ?>"/>
-					<?php _e('by', 'drafts-for-friends');?>
+					<input type="submit" class="button submit-extend" name="drafts-for-friends_extend_submit" value="<?php esc_attr_e( 'Extend', 'drafts-for-friends' ); ?>"/>
+					<?php _e( 'by', 'drafts-for-friends' ); ?>
 					<input name="expires" type="number" min="0" step="1" value="2" size="4"/>
 					<?php echo $this->build_time_measure_select(); ?>
-					<a class="drafts-for-friends-extend-cancel" data-key="<?php echo esc_attr( $share['key'] ); ?>" href=""><?php _e('Cancel', 'drafts-for-friends'); ?></a>
+					<a class="drafts-for-friends-extend-cancel" data-key="<?php echo esc_attr( $share['key'] ); ?>" href=""><?php _e( 'Cancel', 'drafts-for-friends' ); ?></a>
 				</form>
 			</td>
 			<td class="actions">
-				<a class="delete button delete-draft-link" data-share="<?php echo esc_attr( $share['key'] ); ?>" data-id="<?php echo esc_attr( $share['id'] ); ?>" href="<?php echo esc_url( $this->get_delete_url( $share ) ); ?>"><?php echo esc_html( __('Delete', 'drafts-for-friends') ); ?></a>
+				<a class="delete button delete-draft-link" data-share="<?php echo esc_attr( $share['key'] ); ?>" data-id="<?php echo esc_attr( $share['id'] ); ?>" href="<?php echo esc_url( $this->get_delete_url( $share ) ); ?>"><?php echo esc_html( __( 'Delete', 'drafts-for-friends' ) ); ?></a>
 			</td>
 		</tr><?php
 
@@ -303,9 +303,9 @@ class JS_Drafts_For_Friends	{
 		$this->save_admin_options();
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			die( __('Shared post has been successfully deleted.', 'drafts-for-friends') );
+			die( __( 'Shared post has been successfully deleted.', 'drafts-for-friends' ) );
 		} else {
-			return __('Shared post has been successfully deleted.', 'drafts-for-friends');
+			return __( 'Shared post has been successfully deleted.', 'drafts-for-friends' );
 		}
 	}
 
@@ -341,12 +341,12 @@ class JS_Drafts_For_Friends	{
 		$this->save_admin_options();
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			$return_array = array(
-				'message'	=> esc_attr__('Post sharing time has been updated.', 'drafts-for-friends'),
+				'message'	=> esc_attr__( 'Post sharing time has been updated.', 'drafts-for-friends' ),
 				'time'		=> esc_attr( $this->get_expired_time( array( 'expires' => $new_expiration ) ) ),
 			);
 			die( json_encode( $return_array ) );
 		} else {
-			return __('Post sharing time has been updated.', 'drafts-for-friends');
+			return __( 'Post sharing time has been updated.', 'drafts-for-friends' );
 		}
 	}
 
@@ -421,7 +421,7 @@ class JS_Drafts_For_Friends	{
 
 		// Let's get the output started...
 		$output = '<select id="drafts-for-friends-postid" name="post_id">';
-		$output .= '<option value="">' . __( 'Choose a draft:', 'drafts-for-friends ') . '</option>';
+		$output .= '<option value="">' . __( 'Choose a draft:', 'drafts-for-friends ' ) . '</option>';
 		foreach ( $drafts as $draft => $type ) {
 			$output .= '<option value="" disabled>' . esc_html( ucfirst( $draft ) ) . '</option>';
 			foreach ( $type as $draft ) {
@@ -485,7 +485,7 @@ class JS_Drafts_For_Friends	{
 
 		// Get the expired time.
 		$expire_time = new DateTime();
-		$expire_time->setTimezone( new DateTimeZone( get_option('timezone_string') ) );
+		$expire_time->setTimezone( new DateTimeZone( get_option( 'timezone_string' ) ) );
 		$expire_time->setTimestamp( $date );
 
 		// Get the current time.
@@ -508,9 +508,9 @@ class JS_Drafts_For_Friends	{
 			$offset = $this->get_timezone_offset( get_option( 'timezone_string' ), 'UTC' );
 			if ( $offset ) {
 				$time = $share['expires'] + $offset;
-				return __( 'Expired: ', 'drafts-for-friends' ) . '<time datetime="' . esc_attr( date('Y-m-d', $time ) ) . '">' . esc_html( date('l jS \of F Y h:i A', $time ) ) . '</time>';
+				return __( 'Expired: ', 'drafts-for-friends' ) . '<time datetime="' . esc_attr( date( 'Y-m-d', $time ) ) . '">' . esc_html( date( 'l jS \of F Y h:i A', $time ) ) . '</time>';
 			} else {
-				return __( 'Expired: ', 'drafts-for-friends' ) . '<time datetime="' . esc_attr( date('Y-m-d', $share['expires'] ) ) . '">' . esc_html( date('l jS \of F Y h:i A', $share['expires'] ) ) . '</time>';
+				return __( 'Expired: ', 'drafts-for-friends' ) . '<time datetime="' . esc_attr( date( 'Y-m-d', $share['expires'] ) ) . '">' . esc_html( date( 'l jS \of F Y h:i A', $share['expires'] ) ) . '</time>';
 			}
 		} else {
 			return __( 'Expires in ', $this->slug  ) . human_time_diff( intval( $share['expires'] ), current_time( 'timestamp', get_option( 'timezone_string' ) ) );
@@ -545,10 +545,10 @@ class JS_Drafts_For_Friends	{
 	 * @return 	string 	The select drop down.
 	 */
 	private function build_time_measure_select() {
-		$secs 	= __('seconds', 'drafts-for-friends');
-		$mins 	= __('minutes', 'drafts-for-friends');
-		$hours 	= __('hours', 'drafts-for-friends');
-		$days 	= __('days', 'drafts-for-friends');
+		$secs 	= __( 'seconds', 'drafts-for-friends' );
+		$mins 	= __( 'minutes', 'drafts-for-friends' );
+		$hours 	= __( 'hours', 'drafts-for-friends' );
+		$days 	= __( 'days', 'drafts-for-friends' );
 		$output = '<select name="measure">
 				<option value="s">' . esc_html( $secs ) . '</option>
 				<option value="m">' . esc_html( $mins ) . '</option>
