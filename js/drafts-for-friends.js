@@ -128,6 +128,7 @@ jQuery( document ).ready( function( $ ) {
 			type: 'POST',
 			success: function( data ) {
 				$( 'span.loading' ).empty();
+				$('.none-found').hide();
 				$( '.widefat tr:last' ).after( data );
 				$('.updated').html( '<p>' + drafts.added + '</p>' ).slideDown();
 			}
