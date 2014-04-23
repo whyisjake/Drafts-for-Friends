@@ -421,7 +421,7 @@ class JS_Drafts_For_Friends	{
 
 		// Let's get the output started...
 		$output = '<select id="drafts-for-friends-postid" name="post_id">';
-		$output .= '<option value="">' . __( 'Choose a draft:', 'drafts-for-friends ' ) . '</option>';
+		$output .= '<option value="">' . __( 'Choose a draft:', 'drafts-for-friends' ) . '</option>';
 		foreach ( $drafts as $draft => $type ) {
 			$output .= '<option value="" disabled>' . esc_html( ucfirst( $draft ) ) . '</option>';
 			foreach ( $type as $draft ) {
@@ -513,7 +513,7 @@ class JS_Drafts_For_Friends	{
 				return __( 'Expired: ', 'drafts-for-friends' ) . '<time datetime="' . esc_attr( date( 'Y-m-d', $share['expires'] ) ) . '">' . esc_html( date( 'l jS \of F Y h:i A', $share['expires'] ) ) . '</time>';
 			}
 		} else {
-			return __( 'Expires in ', $this->slug  ) . human_time_diff( intval( $share['expires'] ), current_time( 'timestamp', get_option( 'timezone_string' ) ) );
+			return __( 'Expires in ', 'drafts-for-friends'  ) . human_time_diff( intval( $share['expires'] ), current_time( 'timestamp', get_option( 'timezone_string' ) ) );
 		}
 	}
 
