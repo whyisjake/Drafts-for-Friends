@@ -9,24 +9,32 @@ Author URI: http://jakespurlock.com
 Text Domain: drafts-for-friends
 License: license.txt
 */
+/**
+ * Drafts for Friends
+ *
+ * @package    drafts-for-friends
+ * @author     Jake Spurlock <whyisjake@gmail.com>
+ * @version    Release: 0.5
+ *
+ */
 
 class JS_Drafts_For_Friends	{
 
 	/**
 	 * Plugin version
-	 * @var null
+	 * @var string
 	 */
 	protected $version = '0.5';
 
 	/**
 	 * Name space
-	 * @var null
+	 * @var string
 	 */
 	protected $namespace = 'js';
 
 	/**
 	 * Slug
-	 * @var null
+	 * @var string
 	 */
 	protected $slug = 'drafts-for-friends';
 
@@ -36,10 +44,16 @@ class JS_Drafts_For_Friends	{
 	 */
 	protected $shared_post = null;
 
+	/**
+	 * Let's get this going...
+	 */
 	public function __construct(){
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
+	/**
+	 * Init, things to get started.
+	 */
 	public function init() {
 
 		// Need to know which user to pull the shared items from.
@@ -81,16 +95,18 @@ class JS_Drafts_For_Friends	{
 			wp_enqueue_script('jquery');
 			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery'), $this->version );
 			wp_enqueue_style( $this->slug, plugins_url( 'css/drafts-for-friends.css', __FILE__ ), '', $this->version );
-			$args = array(
+			$strings = array(
 				'loading_gif' 	=> esc_js( get_admin_url( '', '/images/wpspin_light.gif' ) ),
 				'added'			=> esc_js( __( 'Draft successfully added', 'drafts-for-friends' ) ),
 			);
-			wp_localize_script( $this->slug, 'drafts', $args );
+
+			wp_localize_script( $this->slug, 'drafts', $strings );
 		}
 	}
 
 	/**
 	 * Get the stored options for all of the shared objects.
+	 * @return array Array of saved drafts
 	 */
 	public function get_admin_options() {
 		$saved_options = get_option('shared');
@@ -112,11 +128,13 @@ class JS_Drafts_For_Friends	{
 	 * Add the admin page.
 	 */
 	public function add_admin_pages(){
-		add_submenu_page('edit.php', __( 'Drafts for Friends', 'drafts-for-friends' ), __('Drafts for Friends', 'drafts-for-friends' ), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
+		add_submenu_page('edit.php', __( 'Drafts for Friends', 'drafts-for-friends' ), __( 'Drafts for Friends', 'drafts-for-friends' ), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
 	}
 
 	/**
 	 * Calculate the expiration date.
+	 * @param 	array 	$params Array of share values.
+	 * @return 	string 	New date stamp
 	 */
 	private function calc( $params ) {
 
@@ -150,6 +168,8 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * Process the posts/urls and set an expiration date.
+	 * @param 	array 	$params Array of share values.
+	 * @return 	string 	Either the row of the table will be returned, or the string saying that the post was updated.
 	 */
 	public function process_post_options( $params ) {
 
@@ -194,8 +214,12 @@ class JS_Drafts_For_Friends	{
 					);
 					$this->user_options['shared'][] = $share;
 					$this->save_admin_options();
+
+					// If we are doing AJAX, send back the new row.
 					if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 						die( $this->row_builder( $share ) );
+					} else {
+						return __( 'Draft successfully added', 'drafts-for-friends' );
 					}
 					break;
 			}
@@ -204,11 +228,16 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * Build a row to add to the table.
+	 *
+	 * @param 	array 	$share The array of items containing the key, and ID of the post.
+	 * @return 	string 	Row of the table that holds all of the shared data.
 	 */
-	function row_builder( $share ) { ?>
+	private function row_builder( $share ) { ?>
 
 		<tr class="<?php echo esc_attr( $share['key'] ); ?>">
-			<td class="id"><?php echo absint( $share['id'] ); ?></td>
+			<td class="id">
+				<?php echo absint( $share['id'] ); ?>
+			</td>
 			<td class="title">
 				<a href="<?php echo esc_url( $this->get_share_url( $share ) ); ?>"><?php echo esc_html( get_the_title( $share['id'] ) ); ?></a> - <small><strong><?php echo esc_html( ucfirst( get_post_status( absint( $share['id'] ) ) ) ); ?></strong></small>
 				<div class="row-actions">
@@ -216,9 +245,12 @@ class JS_Drafts_For_Friends	{
 					<span class="view"><a href="<?php echo $this->get_share_url( $share ); ?>" title="Preview" rel="permalink">Preview</a></span>
 				</div>
 			</td>
-			<td class="share_url"><input type="url" name="" value="<?php echo esc_attr( esc_url( $this->get_share_url( $share ) ) ); ?>" placeholder=""></td>
+			<td class="share_url">
+				<input type="url" name="" value="<?php echo esc_attr( esc_url( $this->get_share_url( $share ) ) ); ?>" placeholder="">
 			</td>
-			<td class="time"><?php echo wp_kses_post( $this->get_expired_time( $share ) ); ?></td>
+			<td class="time">
+				<?php echo wp_kses_post( $this->get_expired_time( $share ) ); ?>
+			</td>
 			<td class="actions">
 				<a class="button drafts-for-friends-extend-button edit" id="drafts-for-friends-extend-link-<?php echo esc_attr( $share['key'] ); ?>" data-key="<?php echo esc_attr( $share['key'] ); ?>" href="#"><?php _e('Extend', 'drafts-for-friends'); ?></a>
 				<form class="drafts-for-friends-extend" data-key="<?php echo esc_attr( $share['key'] ); ?>" id="<?php echo esc_attr( 'drafts-for-friends-extend-form-' . $share['key'] ); ?>" method="post">
@@ -228,7 +260,7 @@ class JS_Drafts_For_Friends	{
 					<input type="submit" class="button submit-extend" name="drafts-for-friends_extend_submit" value="<?php esc_attr_e('Extend', 'drafts-for-friends'); ?>"/>
 					<?php _e('by', 'drafts-for-friends');?>
 					<input name="expires" type="number" min="0" step="1" value="2" size="4"/>
-					<?php echo $this->tmpl_measure_select(); ?>
+					<?php echo $this->build_time_measure_select(); ?>
 					<a class="drafts-for-friends-extend-cancel" data-key="<?php echo esc_attr( $share['key'] ); ?>" href=""><?php _e('Cancel', 'drafts-for-friends'); ?></a>
 				</form>
 			</td>
@@ -243,10 +275,11 @@ class JS_Drafts_For_Friends	{
 	 * Let's put together the delete action. Parse the $_GET request,
 	 * and after the nonce clears, delete the selected post from the options.
 	 *
-	 * @param $params array The items from the $_GET request.
+	 * @param 	array 	$params The items from the $_GET request.
+	 * @return 	string 	Success note.
 	 *
 	 */
-	function process_delete( $params ) {
+	public function process_delete( $params ) {
 
 		// If we are doing a normal $_GET request, the params get passed
 		// through the page load, if this comes over AJAX, we need to grab
@@ -257,6 +290,7 @@ class JS_Drafts_For_Friends	{
 		if ( ! wp_verify_nonce( $_GET['nonce'], 'delete' ) )
 			die( 'The nonce failed, and we couldn\'t go any further...' );
 
+		// Setup the shared array
 		$shared = array();
 
 		foreach( $this->user_options['shared'] as $share ) {
@@ -279,10 +313,11 @@ class JS_Drafts_For_Friends	{
 	 * Let's put together the extend action. Parse the $_POST request,
 	 * and after the nonce clears, extend the selected post from the options.
 	 *
-	 * @param $params array The items from the $_POST request.
+	 * @param 	array 	$params The items from the $_POST request.
+	 * @return 	mixed 	Either an array, or string depending on if DOING_AJAX or not.
 	 *
 	 */
-	function process_extend( $params ) {
+	public function process_extend( $params ) {
 
 		// If we are doing a normal $_GET request, the params get passed
 		// through the page load, if this comes over AJAX, we need to grab
@@ -317,8 +352,10 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * Get the relevant post statuses, and then pluck off published and private.
+	 *
+	 * @return 	array 	All of the draft style post statuses.
 	 */
-	function get_unpublished_post_statuses() {
+	private function get_unpublished_post_statuses() {
 		$stati = get_post_statuses();
 		$statuses = array();
 		foreach ( $stati as $status => $value ) {
@@ -331,9 +368,14 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * Get all of the users posts, and then sort them.
+	 *
+	 * @param  	int 	User ID.
+	 * @return 	array 	All of the users drafts.
+	 *
 	 */
-	function get_the_user_drafts( $uid ) {
+	private function get_the_user_drafts( $uid ) {
 
+		// Let's get all of the post statuses
 		$statuses = $this->get_unpublished_post_statuses();
 
 		// Do we have the query in the cache?
@@ -368,8 +410,10 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	  * Let's build the pulldown that will spit out the dropdown.
+	  *
+	  * @return	string 	Select with all of the users drafts.
 	  */
-	function drafts_dropdown() {
+	private function drafts_dropdown() {
 
 		global $current_user;
 
@@ -390,8 +434,12 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * Get the delete URL for a shared item.
+	 *
+	 * @param 	array 	$share The array that holds the key of the post to delete.
+	 * @return 	string 	$url of the delete URL.
+	 *
 	 */
-	function get_delete_url( $share ) {
+	private function get_delete_url( $share ) {
 		$delete_url = admin_url( 'edit.php' );
 		$args = array(
 			'page'		=> 'drafts-for-friends',
@@ -405,8 +453,12 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * Get the share URL
+	 *
+	 * @param 	array 	$share The array that holds the key of the post to generate a share URL for.
+	 * @return 	string 	$url that can be shared.
+	 *
 	 */
-	function get_share_url( $share ) {
+	private function get_share_url( $share ) {
 
 		// Start off with the home_url();
 		$url = home_url( '/' );
@@ -424,9 +476,12 @@ class JS_Drafts_For_Friends	{
 	}
 
 	/**
-	 * Get a boolean value to see whether the datestamp is in the past or future
+	 * Get a boolean value to see whether the date stamp is in the past or future
+	 * This is kind of a hack, (what isn't on the Internet...) came from a helpful comment in the PHP.net forums.
+	 *
+	 * @param
 	 */
-	function is_in_the_past( $date ) {
+	private function is_in_the_past( $date ) {
 
 		// Get the expired time.
 		$expire_time = new DateTime();
@@ -446,7 +501,8 @@ class JS_Drafts_For_Friends	{
 	/**
 	 * Based on the shared timestamp, return the expires time, or that it is expired.
 	 */
-	function get_expired_time( $share ) {
+	private function get_expired_time( $share ) {
+
 		if ( $this->is_in_the_past( $share['expires'] ) ) {
 
 			$offset = $this->get_timezone_offset( get_option( 'timezone_string' ), 'UTC' );
@@ -462,29 +518,34 @@ class JS_Drafts_For_Friends	{
 	}
 
 	/**
-	* 	Returns the offset from the origin timezone to the remote timezone, in seconds.
-	*	@param $remote_tz;
-	*	@param $origin_tz; If null the servers current timezone is used as the origin.
-	*	@return int;
+	* Returns the offset from the origin timezone to the remote timezone, in seconds.
+	* Also kinda
+	*
+	* @param 	string 	$remote_tz, the remote time zone to check against.
+	* @param 	string 	$origin_tz, the origin, probably UTC... If null the servers current timezone is used as the origin.
+	* @return 	int 	$offset, the timezone offset, in seconds.
 	*/
-	function get_timezone_offset( $remote_tz, $origin_tz = null ) {
+	private function get_timezone_offset( $remote_tz, $origin_tz = null ) {
 		if ( $origin_tz === null ) {
 			if ( !is_string( $origin_tz = date_default_timezone_get() ) ) {
-				return false; // A UTC timestamp was returned -- bail out!
+				// A UTC time stamp was returned -- bail out!
+				return false;
 			}
 		}
 		$origin_dtz = new DateTimeZone( $origin_tz );
 		$remote_dtz = new DateTimeZone( $remote_tz );
-		$origin_dt = new DateTime( "now", $origin_dtz );
-		$remote_dt = new DateTime( "now", $remote_dtz );
-		$offset = $origin_dtz->getOffset( $origin_dt ) - $remote_dtz->getOffset( $remote_dt );
+		$origin_dt 	= new DateTime( "now", $origin_dtz );
+		$remote_dt 	= new DateTime( "now", $remote_dtz );
+		$offset 	= $origin_dtz->getOffset( $origin_dt ) - $remote_dtz->getOffset( $remote_dt );
 		return $offset;
 	}
 
 	/**
 	 * Build the measure select.
+	 *
+	 * @return 	string 	The select drop down.
 	 */
-	function tmpl_measure_select() {
+	private function build_time_measure_select() {
 		$secs 	= __('seconds', 'drafts-for-friends');
 		$mins 	= __('minutes', 'drafts-for-friends');
 		$hours 	= __('hours', 'drafts-for-friends');
@@ -500,81 +561,30 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * Get the current user's shared posts.
+	 * @return 	array 	All of the users shared drafts.
 	 */
-	function get_shared() {
+	private function get_shared() {
 		return ( isset( $this->user_options['shared'] ) ) ? $this->user_options['shared'] : '';
 	}
 
 	/**
-	 * Ouput the admin page
+	 * Output the admin page
+	 *
+	 * @return 	string 	The admin page for Drafts for Friends
+	 *
 	 */
-	function output_existing_menu_sub_admin_page() {
+	public function output_existing_menu_sub_admin_page() {
 
-		// Keeping these on here for now, in the instance the Javascript is disabled. (Could probably remove tho...)
-		if ( isset( $_POST['drafts-for-friends_submit'] ) && $_POST['drafts-for-friends_submit'] ) {
-			$t = $this->process_post_options( $_POST );
-		} elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'extend') {
-			$t = $this->process_extend( $_POST );
-		} elseif ( isset( $_GET['action'] ) && $_GET['action'] == 'process_delete' ) {
-			$t = $this->process_delete( $_GET );
-		} ?>
-
-		<div class="wrap">
-
-			<h2><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h2>
-
-			<div class="updated hide">
-				<?php if ( isset( $t ) )
-					echo esc_html( $t ); ?>
-			</div>
-
-			<h3><?php _e('Currently Shared Drafts', 'drafts-for-friends'); ?></h3>
-
-			<!-- Let's get the table started. -->
-			<table class="widefat">
-				<thead>
-					<tr>
-						<th><?php _e('ID', 'drafts-for-friends'); ?></th>
-						<th><?php _e('Title', 'drafts-for-friends'); ?></th>
-						<th><?php _e('Link', 'drafts-for-friends'); ?></th>
-						<th><?php _e('Expires', 'drafts-for-friends'); ?></th>
-						<th colspan="2" class="actions"><?php _e('Actions', 'drafts-for-friends'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php $s = $this->get_shared();
-					if ( $s ) :
-						foreach( $s as $share ):
-							$this->row_builder( $share );
-						endforeach;
-					else: ?>
-						<tr><td colspan="5"><?php _e('No shared drafts!', 'drafts-for-friends'); ?></td></tr>
-					<?php endif; ?>
-				</tbody>
-			</table>
-			<h3><?php _e('Drafts for Friends', 'drafts-for-friends'); ?></h3>
-			<form class="drafts-for-friends-share" method="post">
-				<div>
-					<?php echo $this->drafts_dropdown(); ?> <span class="loading"></span>
-				</div>
-				<div>
-					<?php wp_nonce_field( 'process', 'process' ); ?>
-					<input type="hidden" name="action" value="process_post_options">
-					<input type="submit" class="button" name="drafts-for-friends_submit" value="<?php esc_attr_e('Share it', 'drafts-for-friends'); ?>" />
-					<?php _e('for', 'drafts-for-friends'); ?>
-					<input name="expires" type="number" min="0" step="1" value="2" size="4"/>
-					<?php echo $this->tmpl_measure_select(); ?>.
-				</div>
-			</form>
-		</div>
-	<?php
+		// Include the page
+		include_once dirname( __FILE__ ) . '/drafts-for-friends-admin-page.php';
 	}
 
 	/**
 	 * Can a friend view a post, check against the list.
 	 *
-	 * @param 	$pid 	int 	Post ID.
-	 * @return 	bool 	false.
+	 * @param 	int 	$pid is the post id..
+	 * @return 	bool 	Default is false, true if the URL matches up.
+	 *
 	 */
 	function can_view( $pid ) {
 
@@ -596,6 +606,10 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * If the post isn't published, and the friend can view, show it.
+	 *
+	 * @param array $posts that come back as a result of the WP_Query object
+	 * @return array The same array that was a parameter
+	 *
 	 */
 	function posts_results_intercept( $posts ) {
 
@@ -619,6 +633,10 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	 * If the current post is a shared post, add it to the array.
+	 *
+	 * @param object $posts that come back as a result of the WP_Query object
+	 * @return array The same array that was a parameter
+	 *
 	 */
 	function the_posts_intercept( $posts ) {
 
