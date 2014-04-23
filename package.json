@@ -4,6 +4,7 @@
   "verison": "0.5",
   "devDependencies": {
     "grunt": "~0.4.2",
-    "grunt-po2mo": "~0.1.0"
+    "grunt-po2mo": "~0.1.0",
+    "grunt-checktextdomain": "~0.1.1",
   }
 }
