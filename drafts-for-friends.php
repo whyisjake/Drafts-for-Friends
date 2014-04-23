@@ -139,8 +139,8 @@ class JS_Drafts_For_Friends	{
 	private function calc( $params ) {
 
 		// Setup some variables, yo.
-		$expiration = MINUTE_IN_SECONDS;
-		$multiply 	= MINUTE_IN_SECONDS;
+		$expiration = 60;
+		$multiply 	= 60;
 
 		// Make sure that we have a valid number as the expiration value
 		if ( isset( $params['expires'] ) )
@@ -152,7 +152,7 @@ class JS_Drafts_For_Friends	{
 			'm' => MINUTE_IN_SECONDS,
 			'h' => HOUR_IN_SECONDS,
 			'd' => DAY_IN_SECONDS,
-			);
+		);
 
 		// Make sure that we have the units to measure.
 		if ( $params['measure'] && $mults[ $params['measure'] ] ) {
@@ -421,7 +421,7 @@ class JS_Drafts_For_Friends	{
 
 		// Let's get the output started...
 		$output = '<select id="drafts-for-friends-postid" name="post_id">';
-		$output .= '<option value="">' . __('Choose a draft:', 'drafts-for-friends') . '</option>';
+		$output .= '<option value="">' . __( 'Choose a draft:', 'drafts-for-friends ') . '</option>';
 		foreach ( $drafts as $draft => $type ) {
 			$output .= '<option value="" disabled>' . esc_html( ucfirst( $draft ) ) . '</option>';
 			foreach ( $type as $draft ) {
@@ -519,7 +519,6 @@ class JS_Drafts_For_Friends	{
 
 	/**
 	* Returns the offset from the origin timezone to the remote timezone, in seconds.
-	* Also kinda
 	*
 	* @param 	string 	$remote_tz, the remote time zone to check against.
 	* @param 	string 	$origin_tz, the origin, probably UTC... If null the servers current timezone is used as the origin.
@@ -527,7 +526,7 @@ class JS_Drafts_For_Friends	{
 	*/
 	private function get_timezone_offset( $remote_tz, $origin_tz = null ) {
 		if ( $origin_tz === null ) {
-			if ( !is_string( $origin_tz = date_default_timezone_get() ) ) {
+			if ( ! is_string( $origin_tz = date_default_timezone_get() ) ) {
 				// A UTC time stamp was returned -- bail out!
 				return false;
 			}
