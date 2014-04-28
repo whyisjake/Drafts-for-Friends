@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DraftsforFriends\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-21 22:26-0700\n"
+"POT-Creation-Date: 2014-04-28 07:31-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: JAKE SPURLOCK <WHYISJAKE@GMAIL.COM>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,6 +23,11 @@ msgstr ""
 #: drafts-for-friends.php:131 drafts-for-friends-admin-page.php:22
 #: drafts-for-friends-admin-page.php:53
 msgid "Drafts for Friends"
+msgstr ""
+
+#: drafts-for-friends.php:183 drafts-for-friends.php:291
+#: drafts-for-friends.php:329
+msgid "The nonce failed, and we couldn't go any further..."
 msgstr ""
 
 #: drafts-for-friends.php:200
@@ -51,10 +56,6 @@ msgstr ""
 
 #: drafts-for-friends.php:306 drafts-for-friends.php:308
 msgid "Shared post has been successfully deleted."
-msgstr ""
-
-#: drafts-for-friends.php:329
-msgid "The nonce failed, and we couldn't go any further..."
 msgstr ""
 
 #: drafts-for-friends.php:344 drafts-for-friends.php:349

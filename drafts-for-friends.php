@@ -96,7 +96,7 @@ class JS_Drafts_For_Friends	{
 			wp_enqueue_script( $this->slug, plugins_url( 'js/drafts-for-friends.js', __FILE__ ), array( 'jquery' ), $this->version );
 			wp_enqueue_style( $this->slug, plugins_url( 'css/drafts-for-friends.css', __FILE__ ), '', $this->version );
 			$strings = array(
-				'loading_gif' 	=> esc_js( get_admin_url( '', '/images/wpspin_light.gif' ) ),
+				'loading_gif'	=> esc_js( get_admin_url( '', '/images/wpspin_light.gif' ) ),
 				'added'			=> esc_js( __( 'Draft successfully added', 'drafts-for-friends' ) ),
 			);
 
@@ -180,7 +180,7 @@ class JS_Drafts_For_Friends	{
 
 		// Check the nonce.
 		if ( ! wp_verify_nonce( $params['process'], 'process' ) )
-			die( 'The nonce failed, and we couldn\'t go any further...' );
+			die( esc_attr__( 'The nonce failed, and we couldn\'t go any further...', 'drafts-for-friends' ) );
 
 
 		// Get the current user.
@@ -288,7 +288,7 @@ class JS_Drafts_For_Friends	{
 
 		// Check the nonce.
 		if ( ! wp_verify_nonce( $_GET['nonce'], 'delete' ) )
-			die( 'The nonce failed, and we couldn\'t go any further...' );
+			die( esc_attr__( 'The nonce failed, and we couldn\'t go any further...', 'drafts-for-friends' ) );
 
 		// Setup the shared array
 		$shared = array();
