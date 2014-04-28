@@ -628,7 +628,7 @@ class JS_Drafts_For_Friends	{
 
 
 	/**
-	 * If the current post is a shared post, add it to the array.
+	 * If the current post is a shared post, return an array with the shared post.
 	 *
 	 * @param object $posts that come back as a result of the WP_Query object
 	 * @return array The same array that was a parameter
