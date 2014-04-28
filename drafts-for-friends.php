@@ -128,7 +128,7 @@ class JS_Drafts_For_Friends	{
 	 * Add the admin page.
 	 */
 	public function add_admin_pages(){
-		add_submenu_page( 'edit.php', __( 'Drafts for Friends', 'drafts-for-friends' ), __( 'Drafts for Friends', 'drafts-for-friends' ), 1, $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
+		add_submenu_page( 'edit.php', __( 'Drafts for Friends', 'drafts-for-friends' ), __( 'Drafts for Friends', 'drafts-for-friends' ), 'delete_others_pages', $this->slug,  array( $this, 'output_existing_menu_sub_admin_page' ) );
 	}
 
 	/**
