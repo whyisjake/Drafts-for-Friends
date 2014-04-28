@@ -582,8 +582,10 @@ class JS_Drafts_For_Friends	{
 	 */
 	function can_view( $pid ) {
 
+		$options = $this->admin_options;
+
 		// Let's get the admin options.
-		foreach( $this->admin_options as $option ) {
+		foreach( $options as $option ) {
 			// Get all of the shares.
 			$shares = $option['shared'];
 			foreach( $shares as $share ) {
