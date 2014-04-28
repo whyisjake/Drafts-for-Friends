@@ -439,7 +439,7 @@ class JS_Drafts_For_Friends	{
 		$args = array(
 			'page'		=> 'drafts-for-friends',
 			'action' 	=> 'process_delete',
-			'key'		=> $share['key'],
+			'key'		=> esc_attr( $share['key'] ),
 			'nonce'		=> wp_create_nonce( 'delete' ),
 			);
 		$url = add_query_arg( $args, $delete_url );
