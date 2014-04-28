@@ -589,7 +589,7 @@ class JS_Drafts_For_Friends	{
 			// Get all of the shares.
 			$shares = $option['shared'];
 			foreach( $shares as $share ) {
-				if ( isset( $_GET['drafts-for-friends'] ) && $share['key'] == $_GET['drafts-for-friends'] && $pid ) {
+				if ( isset( $_GET['drafts-for-friends'] )  && ( $share['key'] == $_GET['drafts-for-friends'] ) && ( absint( $pid ) == absint( $share['id'] ) ) ) {
 					// If the expiration date isn't in the past, then we can set the variable to be true.
 					if( ! $this->is_in_the_past( $share['expires'] ) ) {
 						return true;
