@@ -607,7 +607,7 @@ class JS_Drafts_For_Friends	{
 	 * @return array The same array that was a parameter
 	 *
 	 */
-	function posts_results_intercept( $posts ) {
+	public function posts_results_intercept( $posts ) {
 
 		// Make sure that we aren't on an archive page, or something like that.
 		if ( 1 != count( $posts ) )
@@ -634,7 +634,7 @@ class JS_Drafts_For_Friends	{
 	 * @return array The same array that was a parameter
 	 *
 	 */
-	function the_posts_intercept( $posts ) {
+	public function the_posts_intercept( $posts ) {
 
 		if ( empty( $posts ) && ! is_null( $this->shared_post ) ) {
 			return array( $this->shared_post );
