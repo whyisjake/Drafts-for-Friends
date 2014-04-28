@@ -465,8 +465,8 @@ class JS_Drafts_For_Friends	{
 
 		// Add the arguments.
 		$args = array(
-			'p' 				=> absint( $share['id'] ),
-			'drafts-for-friends' 	=> esc_attr( $share['key'] ),
+			'p'						=> absint( $share['id'] ),
+			'drafts-for-friends'	=> esc_attr( $share['key'] ),
 			);
 
 		$url = add_query_arg( $args, $url );
