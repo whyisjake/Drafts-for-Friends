@@ -619,8 +619,14 @@ class JS_Drafts_For_Friends	{
 		// Get the post status.
 		$status = $the_post->post_status;
 
+		// Test against valid unpublished post types.
+		$status_array= $this->get_unpublished_post_statuses();
+
+		// Set a variable to test against.
+		$valid_status = in_array( $status, $status_array );
+
 		// If the post isn't published, and the user can view, set the shared post
-		if ( ( 'publish' != $status ) && ( $this->can_view( $the_post->ID ) ) ) {
+		if ( ( $valid_status ) && ( $this->can_view( $the_post->ID ) ) ) {
 			$this->shared_post = $the_post;
 		}
 		return $posts;
